@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.airohit.cloud</groupId>
+        <artifactId>agriculture-open</artifactId>
+        <version>1.6.5-snapshot</version>
+    </parent>
+
+    <artifactId>agriculture-app-server</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <description>
+        后端 Server 的主项目，通过引入需要 module-xxx 的依赖，
+        从而实现提供 RESTful API 给前端项目。
+        本质上来说，它就是个空壳（容器）！
+    </description>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-content-app</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-device-app</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-weather-app</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-plant-app</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-peasant-app</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-infra-biz</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-land-app</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-system-app</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-banner</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources/</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.7</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                    <mainClass>com.airohit.agriculture.module.server.ServerApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

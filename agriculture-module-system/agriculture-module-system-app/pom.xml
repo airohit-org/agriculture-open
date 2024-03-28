@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.airohit.cloud</groupId>
+        <artifactId>agriculture-module-system</artifactId>
+        <version>1.6.5-snapshot</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>agriculture-module-system-app</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>
+        system 模块下，我们放通用业务，支撑上层的核心业务。
+        例如说：用户、部门、权限、数据字典等等
+    </description>
+
+    <dependencies>
+        <!-- Spring Cloud 基础 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-env</artifactId>
+        </dependency>
+
+        <!-- 依赖服务 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-system-api</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-system-common</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-infra-api</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+
+        <!-- 业务组件 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-banner</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-operatelog</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-sms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-dict</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-data-permission</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-social</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-tenant</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-ip</artifactId>
+        </dependency>
+
+        <!-- Web 相关 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- DB 相关 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-redis</artifactId>
+        </dependency>
+
+
+        <!-- Test 测试相关 -->
+
+
+        <!-- 工具类相关 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-excel</artifactId>
+        </dependency>
+
+    </dependencies>
+    <!--    <build>-->
+    <!--        <resources>-->
+    <!--            <resource>-->
+    <!--                <directory>src/main/resources/</directory>-->
+    <!--                <filtering>true</filtering>-->
+    <!--            </resource>-->
+    <!--            <resource>-->
+    <!--                <directory>src/main/java</directory>-->
+    <!--                <includes>-->
+    <!--                    <include>**/*.xml</include>-->
+    <!--                </includes>-->
+    <!--            </resource>-->
+    <!--        </resources>-->
+    <!--        <finalName>${project.artifactId}</finalName>-->
+    <!--        <plugins>-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.springframework.boot</groupId>-->
+    <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+    <!--                <version>2.7.7</version>-->
+    <!--                <executions>-->
+    <!--                    <execution>-->
+    <!--                        <phase>package</phase>-->
+    <!--                        <goals>-->
+    <!--                            <goal>repackage</goal>-->
+    <!--                        </goals>-->
+    <!--                    </execution>-->
+    <!--                </executions>-->
+    <!--                <configuration>-->
+    <!--                    <includeSystemScope>true</includeSystemScope>-->
+    <!--                    <mainClass>com.airohit.agriculture.module.system.SystemAppServerApplication</mainClass>-->
+    <!--                </configuration>-->
+    <!--            </plugin>-->
+    <!--            &lt;!&ndash; docker的maven插件，官网：https://github.com/spotify/docker‐maven‐plugin &ndash;&gt;-->
+    <!--            &lt;!&ndash; Dockerfile maven plugin &ndash;&gt;-->
+
+
+    <!--        </plugins>-->
+    <!--    </build>-->
+</project>

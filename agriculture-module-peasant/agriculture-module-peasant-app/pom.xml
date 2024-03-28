@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>agriculture-module-peasant</artifactId>
+        <groupId>com.airohit.cloud</groupId>
+        <version>1.6.5-snapshot</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>agriculture-module-peasant-app</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-peasant-common</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.influxdb</groupId>
+            <artifactId>influxdb-client-java</artifactId>
+            <version>6.3.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
+</project>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>agriculture-module-content</artifactId>
+        <groupId>com.airohit.cloud</groupId>
+        <version>1.6.5-snapshot</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>agriculture-module-content-app</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-content-common</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-web</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <!--    <build>-->
+    <!--        <resources>-->
+    <!--            <resource>-->
+    <!--                <directory>src/main/resources/</directory>-->
+    <!--                <filtering>true</filtering>-->
+    <!--            </resource>-->
+    <!--            <resource>-->
+    <!--                <directory>src/main/java</directory>-->
+    <!--                <includes>-->
+    <!--                    <include>**/*.xml</include>-->
+    <!--                </includes>-->
+    <!--            </resource>-->
+    <!--        </resources>-->
+    <!--        <finalName>${project.artifactId}</finalName>-->
+    <!--        <plugins>-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.springframework.boot</groupId>-->
+    <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+    <!--                <version>2.7.7</version>-->
+    <!--                <executions>-->
+    <!--                    <execution>-->
+    <!--                        <phase>package</phase>-->
+    <!--                        <goals>-->
+    <!--                            <goal>repackage</goal>-->
+    <!--                        </goals>-->
+    <!--                    </execution>-->
+    <!--                </executions>-->
+    <!--                <configuration>-->
+    <!--                    <includeSystemScope>true</includeSystemScope>-->
+    <!--                    <mainClass>com.airohit.agriculture.module.content.ContentAppServerApplication</mainClass>-->
+    <!--                </configuration>-->
+    <!--            </plugin>-->
+    <!--            &lt;!&ndash; docker的maven插件，官网：https://github.com/spotify/docker‐maven‐plugin &ndash;&gt;-->
+    <!--            &lt;!&ndash; Dockerfile maven plugin &ndash;&gt;-->
+
+
+    <!--        </plugins>-->
+    <!--    </build>-->
+</project>

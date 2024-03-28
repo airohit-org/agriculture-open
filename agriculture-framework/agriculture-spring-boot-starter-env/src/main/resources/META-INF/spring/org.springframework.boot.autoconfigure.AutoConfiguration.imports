@@ -1,0 +1,2 @@
+com.airohit.agriculture.framework.env.config.AgricultureEnvWebAutoConfiguration
+com.airohit.agriculture.framework.env.config.AgricultureEnvRpcAutoConfiguration

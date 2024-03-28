@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>agriculture-framework</artifactId>
+        <groupId>com.airohit.cloud</groupId>
+        <version>1.6.5-snapshot</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>agriculture-spring-boot-starter-banner</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Banner 用于在 console 控制台，打印开发文档、接口文档等</description>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

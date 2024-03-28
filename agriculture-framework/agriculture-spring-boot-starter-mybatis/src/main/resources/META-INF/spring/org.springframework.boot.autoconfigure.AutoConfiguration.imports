@@ -1,0 +1,2 @@
+com.airohit.agriculture.framework.datasource.config.AgricultureDataSourceAutoConfiguration
+com.airohit.agriculture.framework.mybatis.config.AgricultureMybatisAutoConfiguration

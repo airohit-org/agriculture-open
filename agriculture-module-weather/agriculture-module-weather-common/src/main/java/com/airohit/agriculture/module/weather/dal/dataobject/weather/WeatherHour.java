@@ -1,0 +1,58 @@
+package com.airohit.agriculture.module.weather.dal.dataobject.weather;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.*;
+
+import java.io.Serializable;
+import java.sql.Time;
+import java.util.Date;
+
+
+/**
+ * 24小时预报
+ * <p>
+ * 此 @Document 用来指定索引, 也可以用来自动创建索引,
+ * 一般而言, 索引是自己手动创建
+ */
+
+@TableName("weather_hour")
+@KeySequence("weather_hour_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+@Data
+@ToString(callSuper = true)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class WeatherHour {
+
+    @TableId(type = IdType.AUTO)
+    private Long id;
+
+    private Long tenantId;
+
+    private Long farmTenantId;
+
+    private String code;
+
+    private String text;
+
+    private String tempFc;
+
+    private String rh;
+
+    private String windDir;
+
+    private String windSpeed;
+
+    private String windClass;
+
+    private Date dataTime;
+
+    private Date date;
+
+    private Time time;
+
+
+}

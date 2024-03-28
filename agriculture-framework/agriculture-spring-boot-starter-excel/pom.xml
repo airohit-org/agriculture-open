@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.airohit.cloud</groupId>
+        <artifactId>agriculture-framework</artifactId>
+        <version>1.6.5-snapshot</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>agriculture-spring-boot-starter-excel</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Excel 拓展</description>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-common</artifactId>
+        </dependency>
+
+        <!-- 业务组件 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-dict</artifactId>
+            <optional>true</optional> <!-- 如果希望使用 @DictFormat 注解，需要引入该依赖 -->
+        </dependency>
+
+        <!-- Web 相关 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <scope>provided</scope> <!-- 设置为 provided，只有 ExcelUtils 使用 -->
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope> <!-- 设置为 provided，只有 ExcelUtils 使用 -->
+        </dependency>
+
+        <!-- 工具类相关 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

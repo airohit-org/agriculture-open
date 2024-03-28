@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.airohit.agriculture.module.plant.dal.mysql.taskInfo.TaskInfoMapper">
+    <!--
+        一般情况下，尽可能使用 Mapper 进行 CRUD 增删改查即可。
+        无法满足的场景，例如说多表关联查询，才使用 XML 编写 SQL。
+        代码生成器暂时只生成 Mapper XML 文件本身，更多推荐 MybatisX 快速开发插件来生成查询。
+     -->
+
+
+    <select id="getTaskFiled" resultType="java.lang.String">
+        select agro_task_filed.json_filed
+        from agro_task_filed
+        where name = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getTaskInfoBaseVOListByDate"
+            resultType="com.airohit.agriculture.module.plant.vo.taskInfo.TaskInfoBaseVO">
+        select id,
+               agro_name        as agroName,
+               start_date       as startDate,
+               task_period      as taskPeriod,
+               type,
+               type_table_name  as typeTableName,
+               type_model_name  as typeModelName,
+               planning_stage   as planningStage,
+               planting_plan_id as plantingPlanId,
+               peasant_id       as peasantId
+        from agro_task_info
+        where start_date like concat('%', #{date,jdbcType=VARCHAR})
+          and planting_plan_id = #{plantingPlanId,jdbcType=INTEGER}
+          and agro_task_info.deleted = 0
+    </select>
+
+    <select id="getTaskInfoRespVoPage" resultType="com.airohit.agriculture.module.plant.vo.taskInfo.TaskInfoRespVo">
+        select agro_task_info.id as id,
+        agro_name as agroName,
+        start_date as startDate,
+        task_period as taskPeriod,
+        agro_task_info.type as type,
+        planting_plan_type_data.stage_name as parentStageName,
+        planting_plan.plan_name as planName,
+        land.land_name as landName,
+        agro_task_info.status as status,
+        agro_task_info.peasant_id as peasantId,
+        system_users.nickname as nickName,
+        agro_task_info.remark as remark,
+        agro_task_info.image_urls as imageUrls,
+        agro_task_info.video_url as videoUrl,
+        agro_task_info.create_time as createTime,
+        pptd.stage_name as planningStage
+        from agro_task_info
+        left join planting_plan on agro_task_info.planting_plan_id = planting_plan.id
+        left join land on planting_plan.land_id = land.id
+        left join planting_plan_type_data on planting_plan.id = planting_plan_type_data.planting_plan_id
+        left join planting_plan_type_data pptd on planting_plan_type_data.parent_id = pptd.id
+        left join system_users on agro_task_info.peasant_id = system_users.id
+        <where>
+            and agro_task_info.planning_stage = planting_plan_type_data.stage_code
+            and agro_task_info.deleted = 0
+            and planting_plan.land_id is not null
+            <if test="taskInfoPageReqVo.status == 5">
+                and agro_task_info.status = 1
+            </if>
+            <if test="taskInfoPageReqVo.status == 4">
+                and (
+                (agro_task_info.status = 0 and date_add(agro_task_info.start_date,INTERVAL agro_task_info.task_period
+                DAY) <![CDATA[ <= ]]> now())
+                or ((now() between agro_task_info.start_date and date_add(agro_task_info.start_date,INTERVAL
+                agro_task_info.task_period DAY)) and agro_task_info.status = 0)
+                or(agro_task_info.start_date > now() and date_add(agro_task_info.start_date,INTERVAL
+                agro_task_info.task_period DAY)> now()))
+            </if>
+            <if test="taskInfoPageReqVo.status == 0">
+                and ((
+                (agro_task_info.status = 0 and date_add(agro_task_info.start_date,INTERVAL agro_task_info.task_period
+                DAY) <![CDATA[ <= ]]> now())
+                or ((now() between agro_task_info.start_date and date_add(agro_task_info.start_date,INTERVAL
+                agro_task_info.task_period DAY)) and agro_task_info.status = 0)
+                or(agro_task_info.start_date > now() and date_add(agro_task_info.start_date,INTERVAL
+                agro_task_info.task_period DAY)> now()))
+                or agro_task_info.status = 1)
+            </if>
+            <if test="taskInfoPageReqVo.landName != null and taskInfoPageReqVo.landName != ''">
+                and land.land_name like concat('%', #{taskInfoPageReqVo.landName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="taskInfoPageReqVo.peasantId != null">
+                and agro_task_info.peasant_id = #{taskInfoPageReqVo.peasantId,jdbcType=BIGINT}
+            </if>
+            <if test="taskInfoPageReqVo.planName != null and taskInfoPageReqVo.planName != ''">
+                and planting_plan.plan_name like concat('%', #{taskInfoPageReqVo.planName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="taskInfoPageReqVo.type != null">
+                and agro_task_info.type = #{taskInfoPageReqVo.type,jdbcType=INTEGER}
+            </if>
+            <if test="taskInfoPageReqVo.agroName != null and taskInfoPageReqVo.agroName != ''">
+                and agro_task_info.agro_name like concat('%', #{taskInfoPageReqVo.agroName,jdbcType=VARCHAR}, '%')
+            </if>
+        </where>
+        order by agro_task_info.create_time
+    </select>
+
+    <select id="getTaskLandPlanVo" resultType="com.airohit.agriculture.module.plant.vo.taskInfo.TaskLandPlanVo">
+        select planting_plan.plan_name            as planName,
+               land.land_name                     as landName,
+               planting_plan_type_data.stage_name as parentStageName,
+               planting_plan_type_data.id         as parentStageNameId,
+               pptd.stage_name                    as planningStage,
+               pptd.id                            as planningStageId
+        from agro_task_info
+                 left join planting_plan on agro_task_info.planting_plan_id = planting_plan.id
+                 left join land on planting_plan.land_id = land.id
+                 left join planting_plan_type_data on planting_plan.id = planting_plan_type_data.planting_plan_id
+                 left join planting_plan_type_data pptd on planting_plan_type_data.parent_id = pptd.id
+        where agro_task_info.id = #{taskId,jdbcType=INTEGER}
+          and agro_task_info.planning_stage = planting_plan_type_data.stage_code
+    </select>
+
+    <select id="selectMemberName" resultType="java.lang.String">
+        select system_users.nickname
+        from agro_task_info
+                 left join system_users on agro_task_info.peasant_id = system_users.id
+        where agro_task_info.id = #{taskId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getTaskInfoRespVoById" resultType="com.airohit.agriculture.module.plant.vo.taskInfo.TaskInfoRespVo">
+        select agro_task_info.id                  as id,
+               agro_name                          as agroName,
+               start_date                         as startDate,
+               task_period                        as taskPeriod,
+               agro_task_info.type                as type,
+               planting_plan_type_data.stage_name as planningStage,
+               planting_plan.plan_name            as planName,
+               land.land_name                     as landName,
+               agro_task_info.status              as status,
+               agro_task_info.peasant_id          as peasantId,
+               system_users.nickname              as nickName,
+               agro_task_info.remark              as remark,
+               agro_task_info.image_urls          as imageUrls,
+               agro_task_info.video_url           as videoUrl,
+               agro_task_info.create_time         as createTime,
+               agro_task_info.address             as address,
+               pptd.stage_name                    as parentStageName
+        from agro_task_info
+                 left join planting_plan on agro_task_info.planting_plan_id = planting_plan.id
+                 left join land on planting_plan.land_id = land.id
+                 left join planting_plan_type_data on planting_plan.id = planting_plan_type_data.planting_plan_id
+                 left join planting_plan_type_data pptd on planting_plan_type_data.parent_id = pptd.id
+                 left join system_users on agro_task_info.peasant_id = system_users.id
+        where agro_task_info.planning_stage = planting_plan_type_data.stage_code
+          and agro_task_info.deleted = 0
+          and planting_plan.land_id is not null
+          and agro_task_info.id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getTaskMessageVoList" resultType="com.airohit.agriculture.module.plant.vo.taskInfo.TaskMessageVo">
+        select agro_name                                                   as agroName,
+               start_date                                                  as startDate,
+               task_period                                                 as taskPeriod,
+               agro_task_info.tenant_id                                    as tenantId,
+               peasant_id                                                  as peasantId,
+               agro_task_info.type                                         as type,
+               CONCAT(farm.province, farm.city, farm.area, land.land_name) as name,
+               raise_crops.crops_name                                      as cropsName
+        from agro_task_info
+                 left join planting_plan on agro_task_info.planting_plan_id = planting_plan.id
+                 left join land on planting_plan.land_id = land.id
+                 left join farm_tenant on agro_task_info.tenant_id = farm_tenant.tenant_id
+                 left join farm on farm_tenant.farm_id = farm.id
+                 left join raise_crops on planting_plan.crops = raise_crops.code and
+                                          planting_plan.tenant_id = raise_crops.tenant_id
+        where agro_task_info.start_date between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+          and planting_plan.land_id is not null
+          and agro_task_info.peasant_id is not null
+    </select>
+</mapper>

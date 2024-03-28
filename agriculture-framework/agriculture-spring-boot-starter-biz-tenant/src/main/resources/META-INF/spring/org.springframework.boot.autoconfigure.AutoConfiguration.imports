@@ -1,0 +1,2 @@
+com.airohit.agriculture.framework.tenant.config.AgricultureFarmTenantAutoConfiguration
+com.airohit.agriculture.framework.tenant.config.AgricultureTenantAutoConfiguration

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.airohit.cloud</groupId>
+        <artifactId>agriculture-module-weather</artifactId>
+        <version>1.6.5-snapshot</version>
+    </parent>
+
+    <artifactId>agriculture-module-weather-common</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <!-- Spring Cloud 基础 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-env</artifactId>
+        </dependency>
+
+        <!-- 依赖服务 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-land-api</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-infra-api</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-plant-api</artifactId>
+            <version>1.6.5-snapshot</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.10.2</version>
+        </dependency>
+
+        <!-- 业务组件 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-banner</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-operatelog</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-sms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-dict</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-data-permission</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-social</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-tenant</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-biz-ip</artifactId>
+        </dependency>
+
+        <!-- Web 相关 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- DB 相关 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-redis</artifactId>
+        </dependency>
+
+
+        <!-- 工具类相关 -->
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-spring-boot-starter-excel</artifactId>
+        </dependency>
+
+
+        <!-- Redis version: 2.1.5.RELEASE -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.airohit.cloud</groupId>
+            <artifactId>agriculture-module-weather-api</artifactId>
+            <version>1.6.5-snapshot</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+    </dependencies>
+</project>

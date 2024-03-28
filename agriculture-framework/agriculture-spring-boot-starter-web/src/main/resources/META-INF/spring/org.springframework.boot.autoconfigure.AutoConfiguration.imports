@@ -1,0 +1,4 @@
+com.airohit.agriculture.framework.apilog.config.AgricultureApiLogAutoConfiguration
+com.airohit.agriculture.framework.jackson.config.AgricultureJacksonAutoConfiguration
+com.airohit.agriculture.framework.swagger.config.AgricultureSwaggerAutoConfiguration
+com.airohit.agriculture.framework.web.config.AgricultureWebAutoConfiguration

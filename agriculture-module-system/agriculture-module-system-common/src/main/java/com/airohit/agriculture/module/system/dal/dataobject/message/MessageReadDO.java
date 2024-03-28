@@ -1,0 +1,46 @@
+package com.airohit.agriculture.module.system.dal.dataobject.message;
+
+import com.airohit.agriculture.framework.mybatis.core.dataobject.BaseDO;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.*;
+
+/**
+ * Created with IDEA
+ *
+ * @author :shiminghao
+ * @date :2023/6/8 09:09
+ */
+@TableName("message_read")
+@KeySequence("message_read_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MessageReadDO extends BaseDO {
+    /**
+     * Id
+     */
+    @TableId(type = IdType.AUTO)
+    private Integer id;
+    /**
+     * 用户ID
+     */
+    private Integer userId;
+    /**
+     * 消息ID
+     */
+    private Integer messageId;
+    /**
+     * 状态
+     */
+    private Integer status;
+    /**
+     * 备注
+     */
+    private String remark;
+}

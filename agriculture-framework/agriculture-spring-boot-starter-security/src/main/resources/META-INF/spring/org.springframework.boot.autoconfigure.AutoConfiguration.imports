@@ -1,0 +1,2 @@
+com.airohit.agriculture.framework.security.config.AgricultureSecurityAutoConfiguration
+com.airohit.agriculture.framework.security.config.AgricultureWebSecurityConfigurerAdapter

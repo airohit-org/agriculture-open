@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>agriculture-open</artifactId>
+        <groupId>com.airohit.cloud</groupId>
+        <version>1.6.5-snapshot</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>agriculture-module-content</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>agriculture-module-content-api</module>
+        <module>agriculture-module-content-biz</module>
+        <module>agriculture-module-content-common</module>
+        <module>agriculture-module-content-app</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+
+
+</project>
