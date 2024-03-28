@@ -1,0 +1,334 @@
+// pc
+$contentWidth: 360px;
+$containerWidth: 500px;
+$containerHeight: 590px;
+
+// mobile
+$rate: .6;
+$largeRate: 1.7;
+$maxRate: 2;
+
+
+.container {
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+
+  &-0 {
+    display: grid;
+    place-items: center;
+    background-image: url('@/assets/images/loginBg.jpg');
+  }
+  &-1 {
+    background-image: url('@/assets/images/loginBg1.webp');
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .container-content{
+      margin-right: 10%;
+    }
+  }
+
+  &-content {
+    width: $containerWidth;
+    height: $containerHeight;
+    background-image: url('@/assets/images/loginContentBg.png');
+    background-size: cover;
+    display: grid;
+    place-items: center;
+
+    &-inner {
+      width: 460px;
+      height: 550px;
+      background-color: rgba(255, 255, 255, .95);
+      background-clip: content-box;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &-logo {
+        margin-top: 47px;
+        width: 216px;
+        height: 68.4px;
+        margin-bottom: 46px;
+      }
+
+      &-form {
+        margin-top: 28px;
+        width: $contentWidth;
+
+         :deep(.el-form-item) {
+          margin-bottom: 0 !important;
+        }
+
+        &-item {
+          height: 60px;
+          margin-bottom: 10px;
+
+           :deep(.el-input__wrapper){
+            padding: 0;
+          }
+           :deep(.el-input__inner) {
+            height: 60px !important;
+            font-size: 18px !important;
+            padding: 1px 15px;
+
+            &::-webkit-input-placeholder {
+              font-size: 18px;
+              font-family: PingFang SC;
+              font-weight: 400;
+              color: #979E9E;
+            }
+          }
+        }
+
+        &-btns {
+          width: 100%;
+          height: 60px;
+          background-color: rgb(57, 188, 119);
+          margin-top: 15px;
+          border: none;
+          font-size: 22px;
+          font-family: PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+          line-height: 34px;
+        }
+      }
+
+      &-info {
+        width: $contentWidth;
+        margin-top: 30px;
+        font-size: 16px;
+        font-family: PingFang SC;
+        font-weight: 400;
+        display: flex;
+        justify-content: space-between;
+
+        &-forget {
+          &>span {
+            user-select: none;
+            cursor: pointer;
+            color: #20B431;
+          }
+        }
+
+        &-sign {
+          &>span {
+            user-select: none;
+            cursor: pointer;
+            color: #20B431;
+          }
+
+          &>span:first-child {
+            color: #666666;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+@media screen and (max-width: 599px) {
+
+  .container {
+
+    &-content {
+      width: $containerWidth * $rate;
+      height: $containerHeight * $rate;
+
+      &-inner {
+        width: 460px * $rate;
+        height: 550px * $rate;
+
+        &-logo {
+          margin-top: 47px * $rate;
+          width: 180px * $rate;
+          height: 57px * $rate;
+        }
+
+        &-tabs {
+          width: $contentWidth * $rate;
+          margin-top: 46px * $rate;
+
+          &-item {
+            cursor: auto;
+            height: 34px * $rate;
+            line-height: 34px * $rate;
+            font-size: 22px * $rate;
+          }
+        }
+
+        &-form {
+          margin-top: 28px * $rate;
+          width: $contentWidth * $rate;
+
+          &-item {
+            height: 60px * $rate;
+            margin-bottom: 10px * $rate;
+
+             :deep(.el-input__inner) {
+              height: 60px * $rate !important;
+              font-size: 18px * $rate !important;
+
+              &::-webkit-input-placeholder {
+                font-size: 18px * $rate;
+              }
+            }
+          }
+
+          &-btns {
+            height: 60px * $rate;
+            margin-top: 15px * $rate;
+            font-size: 22px * $rate;
+            line-height: 34px * $rate;
+          }
+        }
+
+        &-info {
+          width: $contentWidth * $rate;
+          margin-top: 30px * $rate;
+          font-size: 16px * $rate;
+        }
+      }
+    }
+  }
+
+}
+
+// 大屏
+@media screen and (min-width: 2160px) {
+  .container {
+    &-content {
+      width: $containerWidth * $largeRate;
+      height: $containerHeight * $largeRate;
+
+      &-inner {
+        width: 460px * $largeRate;
+        height: 550px * $largeRate;
+
+        &-logo {
+          margin-top: 47px * $largeRate;
+          width: 180px * $largeRate;
+          height: 57px * $largeRate;
+        }
+
+        &-tabs {
+          width: $contentWidth * $largeRate;
+          margin-top: 46px * $largeRate;
+
+          &-item {
+            cursor: auto;
+            height: 34px * $largeRate;
+            line-height: 34px * $largeRate;
+            font-size: 22px * $largeRate;
+          }
+        }
+
+        &-form {
+          margin-top: 28px * $largeRate;
+          width: $contentWidth * $largeRate;
+
+          &-item {
+            height: 60px * $largeRate;
+            margin-bottom: 10px * $largeRate;
+
+             :deep(.el-input__inner) {
+              height: 60px * $largeRate !important;
+              font-size: 18px * $largeRate !important;
+
+              &::-webkit-input-placeholder {
+                font-size: 18px * $largeRate;
+              }
+            }
+          }
+
+          &-btns {
+            height: 60px * $largeRate;
+            margin-top: 15px * $largeRate;
+            font-size: 22px * $largeRate;
+            line-height: 34px * $largeRate;
+          }
+        }
+
+        &-info {
+          width: $contentWidth * $largeRate;
+          margin-top: 30px * $largeRate;
+          font-size: 16px * $largeRate;
+        }
+      }
+    }
+  }
+}
+
+
+// 超大屏
+@media screen and (min-width: 3840px) {
+  .container {
+    &-content {
+      width: $containerWidth * $maxRate;
+      height: $containerHeight * $maxRate;
+
+      &-inner {
+        width: 460px * $maxRate;
+        height: 550px * $maxRate;
+
+        &-logo {
+          margin-top: 47px * $maxRate;
+          width: 180px * $maxRate;
+          height: 57px * $maxRate;
+        }
+
+        &-tabs {
+          width: $contentWidth * $maxRate;
+          margin-top: 46px * $maxRate;
+
+          &-item {
+            cursor: auto;
+            height: 34px * $maxRate;
+            line-height: 34px * $maxRate;
+            font-size: 22px * $maxRate;
+          }
+        }
+
+        &-form {
+          margin-top: 28px * $maxRate;
+          width: $contentWidth * $maxRate;
+
+          &-item {
+            height: 60px * $maxRate;
+            margin-bottom: 10px * $maxRate;
+
+             :deep(.el-input__inner) {
+              height: 60px * $maxRate !important;
+              font-size: 18px * $maxRate !important;
+
+              &::-webkit-input-placeholder {
+                font-size: 18px * $maxRate;
+              }
+            }
+          }
+
+          &-btns {
+            height: 60px * $maxRate;
+            margin-top: 15px * $maxRate;
+            font-size: 22px * $maxRate;
+            line-height: 34px * $maxRate;
+          }
+        }
+
+        &-info {
+          width: $contentWidth * $maxRate;
+          margin-top: 30px * $maxRate;
+          font-size: 16px * $maxRate;
+        }
+      }
+    }
+  }
+}

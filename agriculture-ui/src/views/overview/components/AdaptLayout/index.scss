@@ -1,0 +1,214 @@
+$topHeight: calc(100vh - 96px);
+$lightWidth: 670px;
+$moduleWidth: 430px;
+$left-1-height: 240px;
+$left-2-height: 386px;
+$left-3-height: 323px;
+$right-0-height: 30px;
+$right-1-height: 588.5px;
+$right-2-height: 321px;
+$light-color-1: #000;
+$light-color-2: rgba(20, 27, 31, 0.86);
+$light-color-3: rgba(8, 27, 26, 0.72);
+$light-color-4: rgba(8, 27, 26, 0.6);
+$light-color-5: transparent;
+// $light-color-1: red;
+// $light-color-2: blue;
+// $light-color-3: yellow;
+// $light-color-4: green;
+// $light-color-5: transparent;
+$stage-1: 0%;
+$stage-2: 28%;
+$stage-3: 70%;
+$stage-4: 82%;
+$stage-5: 100%;
+
+.overview {
+  width: 100%;
+  height: $topHeight;
+  overflow: auto;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+  .bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .light {
+    position: absolute;
+    width: 36.13%;
+    height: 100%;
+    z-index: 2;
+
+    &-1 {
+      background: linear-gradient(
+        90deg,
+        $light-color-1 $stage-1,
+        $light-color-2 $stage-2,
+        $light-color-3 $stage-3,
+        $light-color-4 $stage-4,
+        $light-color-5 $stage-5
+      );
+      left: 0;
+    }
+    &-2 {
+      background: linear-gradient(
+        270deg,
+        $light-color-1 $stage-1,
+        $light-color-2 $stage-2,
+        $light-color-3 $stage-3,
+        $light-color-4 $stage-4,
+        $light-color-5 $stage-5
+      );
+      right: 0;
+    }
+    &-3 {
+      width: 100%;
+      height: 13.21%;
+      top: 0;
+      background: linear-gradient(
+        180deg,
+        #11181b 0%,
+        $light-color-2 57%,
+        $light-color-5 100%
+      );
+    }
+    &-4 {
+      width: 100%;
+      height: 13.21%;
+      bottom: 0;
+      background: linear-gradient(
+        0deg,
+        #11181b 0%,
+        $light-color-2 57%,
+        $light-color-5 100%
+      );
+    }
+  }
+
+  .item {
+    z-index: 3;
+    height: 100%;
+    width: 24.7%;
+    overflow: hidden;
+  }
+
+  .left,
+  .right {
+    padding-top: 31px;
+    width: 458px;
+    height: 1054px;
+    position: relative;
+    // border: 5px solid red;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .center {
+    z-index: 3;
+    display: flex;
+    align-self: flex-end;
+    height: 100%;
+    position: relative;
+
+    .accTempZoneWrap {
+      flex: 1;
+      align-self: flex-end;
+      height: 113px;
+      background: linear-gradient(
+        90.13deg,
+        rgba(17, 30, 30, 0) 0.12%,
+        rgba(18, 30, 29, 0.55) 15.24%,
+        rgba(19, 31, 28, 0.79) 46%,
+        rgba(31, 38, 33, 0.4) 75.2%,
+        rgba(38, 43, 37, 0) 100.22%
+      );
+      margin-bottom: 61px;
+      padding: 35px 25px 31px;
+    }
+
+    .info {
+      position: absolute;
+      top: 81px;
+      max-width: 100%;
+      width: 400px;
+      // left: 50%;
+      height: 38px;
+      transform: scale(0.5);
+      right: 0%;
+    }
+  }
+
+  .module-item {
+    flex-shrink: 0;
+    width: $moduleWidth;
+    box-sizing: content-box;
+  }
+
+  .left {
+    margin-left: 27.68px;
+    .total {
+      position: absolute;
+      top: 45px;
+      right: -106px;
+    }
+
+    &-1 {
+      // margin-top: 31px;
+      height: $left-1-height;
+    }
+
+    &-2 {
+      // margin-top: 45.1px;
+      height: $left-2-height;
+    }
+    &-3 {
+      // margin-top: 39px;
+      height: $left-3-height;
+    }
+  }
+
+  .right {
+    &-0 {
+      // margin-top: 10px;
+      height: $right-0-height;
+      display: flex;
+      justify-content: flex-end;
+    }
+    &-1 {
+      // margin-top: 31px;
+      height: $right-1-height;
+    }
+    &-2 {
+      // margin-top: 58.5px;
+      height: $right-2-height;
+    }
+  }
+
+  .title {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    max-width: 50%;
+    transform: translateX(-50%);
+    width: 372px;
+    height: 50px;
+    z-index: 3;
+  }
+
+  .loading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 3;
+  }
+}

@@ -1,0 +1,56 @@
+
+
+.popup-container {
+  width: 260px;
+  height: 359px;
+  img{
+    width: 261.5px;
+  }
+  &-topBorder{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+  &-bottomBorder{
+    position: absolute;
+    bottom: -2px;
+    right: 0px;
+  }
+}
+
+:deep(.leaflet-popup-content-wrapper) {
+    color: #fff !important;
+    background: rgba(0, 0, 0, 0.62);
+    border-radius: 0 !important;
+    border: 1px solid rgba(31, 250, 206, 0.72);
+    padding: 0;
+    // background-image: url("/images/bg/commonBg.jpg");
+  }
+
+  :deep(.leaflet-popup .leaflet-zoom-animated){
+    position: absolute !important;
+    transform: none !important;
+    right: 90px !important;
+    bottom: 30px !important;
+  }
+  
+  :deep(.leaflet-popup-content) {
+    margin: 0;
+    width: 260px !important;
+  }
+  
+  :deep(.leaflet-popup-tip) {
+    display: none;
+  }
+  
+  :deep(.leaflet-container .leaflet-popup-close-button) {
+    color: rgba(255,255,255,0.72) !important;
+    margin-top: 18px;
+    margin-right: 15px;
+    line-height: normal;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    // background-image: url("/images/bg/iconBg.png");
+  }
