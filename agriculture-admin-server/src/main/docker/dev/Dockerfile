@@ -21,6 +21,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 #暴露端口
 EXPOSE $SERVER_PORT
 #定义jvm参数变量
-ENV JAVA_OPTS="-Xms128m -Xmx256m -javaagent:/home/skywalking-agent/skywalking-agent.jar  -Dskywalking.collector.backend_service=172.25.229.29:11800"
+ENV JAVA_OPTS="-Xms128m -Xmx256m "
 #运行命令
-ENTRYPOINT java -Dserver.port=${SERVER_PORT} ${JAVA_OPTS} -Dskywalking.agent.service_name=${SERVER_NAME}-${IP_ADDR}-${SERVER_PORT}  -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+ENTRYPOINT java -Dserver.port=${SERVER_PORT} ${JAVA_OPTS}  -Djava.security.egd=file:/dev/./urandom -jar /app.jar
