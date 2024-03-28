@@ -57,7 +57,6 @@
 
 ## 系统截图
 * ![img_4.png](document-picture/img_4.png)
-* ![img_5.png](document-picture/img_5.png)
 * ![img_6.png](document-picture/img_6.png)
 * ![img_7.png](document-picture/img_7.png)
 * ![img_8.png](document-picture/img_8.png)
