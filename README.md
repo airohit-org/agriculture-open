@@ -114,6 +114,7 @@
 </p>
 
 ## 系统预览
+<div align="center" width="90%" height="90%">
 <table align="center" style="width: 80%;height: 80%;">
     <tr>
         <td><img src="document-picture/preview/img_1.png"/></td>
@@ -140,6 +141,7 @@
         <td><img src="document-picture/preview/img_12.png"/></td>
     </tr>
 </table>
+</div>
 
 ## 公众号
 ![img15.png](document-picture/preview/img_15.jpg)&nbsp;&nbsp;&nbsp; ![img14.png](document-picture/preview/img_14.jpg)
