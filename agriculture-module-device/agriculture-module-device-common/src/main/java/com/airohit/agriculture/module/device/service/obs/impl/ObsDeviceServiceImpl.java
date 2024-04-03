@@ -321,6 +321,8 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
     }
 
     @Override
+    @TenantIgnore
+    @FarmTenantIgnore
     public void createJuYingService(ObsDeviceClaimDto obsDeviceClaimDto) {
         Connection connection = SshUtils.login(serviceIp, serviceUsername, servicePassword);
         SshUtils.execmd(connection, "sh /home/modbus/jydz/modbus_tcp_port/shell_test.sh " + obsDeviceClaimDto.getDeviceServicePort());
@@ -350,6 +352,8 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
     }
 
     @Override
+    @TenantIgnore
+    @FarmTenantIgnore
     public void juYingKillPort(Integer port) {
         Connection connection = SshUtils.login(serviceIp, serviceUsername, servicePassword);
         String lsofExecmd = SshUtils.execmd(connection, "lsof -i:" + port);
@@ -363,6 +367,8 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
     }
 
     @Override
+    @TenantIgnore
+    @FarmTenantIgnore
     public ObsDeviceIpVo getIpAndPort() {
         ObsDeviceIpVo obsDeviceIpVo = new ObsDeviceIpVo();
         Integer port;
@@ -374,7 +380,6 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
 
         Integer newPort = port + 1;
         redisService.setCacheObject(DEVICE_PORT, newPort);
-
         setPort(port, obsDeviceIpVo);
 
         return obsDeviceIpVo;
@@ -404,9 +409,20 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
             }
         }
         LambdaQueryWrapperX<ObsDeviceDO> wrapperX = new LambdaQueryWrapperX<>();
-
+        String deviceType = obsDevicePageDto.getDeviceType();
+        if (StrUtil.isNotEmpty(deviceType)) {
+            List<String> split = StrUtil.split(deviceType, ',');
+            wrapperX.and(paper -> {
+                for (int i = 0; i < split.size(); i++) {
+                    if (i == 0) {
+                        paper.eq(ObsDeviceDO::getDeviceType, split.get(i));
+                    } else {
+                        paper.or().eq(ObsDeviceDO::getDeviceType, split.get(i));
+                    }
+                }
+            });
+        }
         PageResult<ObsDeviceDO> obsDeviceDOPageResult = obsDeviceMapper.selectPage(obsDevicePageDto, wrapperX
-                .likeIfPresent(ObsDeviceDO::getDeviceType, obsDevicePageDto.getDeviceType())
                 .eqIfPresent(ObsDeviceDO::getStatus, obsDevicePageDto.getStatus())
                 .likeIfPresent(ObsDeviceDO::getDeviceName, obsDevicePageDto.getDeviceName())
                 .inIfPresent(ObsDeviceDO::getFarmId, farmIdList)
@@ -429,6 +445,24 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
                 if (ObjectUtil.isNotEmpty(obsSystemFirmDO)) {
                     obsDeviceVo.setDeviceFirm(obsSystemFirmDO.getFirmName());
                 }
+
+                if (ObjectUtil.isNotEmpty(obsDeviceVo.getLandId())) {
+                    LandDO result = landService.get(obsDeviceVo.getLandId());
+                    if (StrUtil.isNotEmpty(result.getLandName()))
+                        obsDeviceVo.setLandName(result.getLandName());
+                }
+
+                Boolean hasKey = redisService.hasKey(DEVICE_STATUS_EXPIRE + obsDeviceVo.getDeviceAddr());
+                if (hasKey && obsDeviceVo.getStatus().equals(OFFLINE)) {
+                    obsDeviceVo.setStatus(ONLINE);
+                    obsDeviceDO.setStatus(ONLINE);
+                    obsDeviceMapper.updateById(obsDeviceDO);
+                } else if (!hasKey && obsDeviceVo.getStatus().equals(ONLINE)) {
+                    obsDeviceVo.setStatus(OFFLINE);
+                    obsDeviceDO.setStatus(OFFLINE);
+                    obsDeviceMapper.updateById(obsDeviceDO);
+                }
+
                 voList.add(obsDeviceVo);
             });
             pageResult.setList(voList);
@@ -531,6 +565,7 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
     }
 
     @Override
+    @TenantIgnore
     public ObsDeviceVo claimDevice(ObsDeviceClaimDto obsDeviceClaimDto) {
         ObsDeviceDO obsDeviceDO = new ObsDeviceDO();
         BeanUtil.copyProperties(obsDeviceClaimDto, obsDeviceDO);
@@ -546,6 +581,8 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
     }
 
     @Override
+    @TenantIgnore
+    @FarmTenantIgnore
     public Boolean updateDevice(ObsDeviceUpdateDto obsDeviceUpdateDto) {
         ObsDeviceDO obsDeviceDO = obsDeviceMapper.selectById(obsDeviceUpdateDto.getId());
         if (ObjectUtil.isEmpty(obsDeviceDO)) {
@@ -781,6 +818,7 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
                     obsDeviceInfoDO.setCreateTime(LocalDateTime.now());
                     obsDeviceInfoDO.setUpdateTime(LocalDateTime.now());
                     obsDeviceInfoMapper.insert(obsDeviceInfoDO);
+                    redisService.setCacheObject(DEVICE_STATUS_EXPIRE + obsDeviceDO.getDeviceAddr(), obsDeviceDO.getDeviceAddr(), 6L, TimeUnit.MINUTES);
                 }
             }
         }
@@ -797,6 +835,7 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
             String redisKey = "DeviceUserLoginResponseVo:" + obsDeviceFirmDO.getId() + ":" + obsDeviceFirmDO.getLoginName();
             if (redisService.hasKey(redisKey)) {
                 userLoginResponseVo = redisService.getCacheObject(redisKey);
+                //userLoginResponseVo = JSONObject.parseObject(json, UserLoginResponseVo.class);
             } else {
                 JSONObject userLoginResponseVoResult = userInfoClient.userLogin(userLoginRequestVo);
                 Result javaObject = JSONObject.toJavaObject(userLoginResponseVoResult, Result.class);
@@ -933,6 +972,7 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
                         obsDeviceInfoDO.setCreateTime(LocalDateTime.now());
                         obsDeviceInfoDO.setUpdateTime(LocalDateTime.now());
                         obsDeviceInfoMapper.insert(obsDeviceInfoDO);
+                        redisService.setCacheObject(DEVICE_STATUS_EXPIRE + obsDeviceDO.getDeviceAddr(), obsDeviceDO.getDeviceAddr(), 33L, TimeUnit.MINUTES);
                         break;
                     }
                 }
@@ -1199,6 +1239,8 @@ public class ObsDeviceServiceImpl implements ObsDeviceService {
 
     @Async
     @Override
+    @TenantIgnore
+    @FarmTenantIgnore
     public void bjthSave(ObsDeviceFirmDO obsDeviceFirmDO) {
         List<ObsDeviceDO> obsDeviceDOS = obsDeviceMapper.selectList(new LambdaQueryWrapperX<ObsDeviceDO>().eq(ObsDeviceDO::getFarmFirmId, obsDeviceFirmDO.getId()));
         obsDeviceDOS.forEach(obsDeviceDO -> {

@@ -35,10 +35,10 @@ public class ObsDeviceVo {
     @ApiModelProperty("设备名称")
     private String deviceName;
     @ApiModelProperty("经度")
-    private double devicelng;
+    private String devicelng;
 
     @ApiModelProperty("纬度")
-    private double devicelat;
+    private String devicelat;
 
     @ApiModelProperty("设备状态(online 在线,offline 离线,alarm 告警)")
     private String status;

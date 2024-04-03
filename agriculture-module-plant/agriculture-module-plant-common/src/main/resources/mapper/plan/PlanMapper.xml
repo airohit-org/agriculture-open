@@ -25,17 +25,13 @@
         LEFT JOIN crops_varieties cv ON pp.crops_type = cv.`code` AND cv.raise_crops_id = rc.id
         LEFT JOIN land l ON l.id = pp.land_id
         <where>
-            pp.deleted = 0
+            pp.deleted = 0 AND pp.is_template = #{plan.isTemplate}
             <if test="plan.planName != null and plan.planName != ''">
                 AND pp.plan_name like concat('%', #{plan.planName}, '%')
             </if>
 
             <if test="plan.crops != null and plan.crops != ''">
                 AND pp.crops = #{plan.crops}
-            </if>
-
-            <if test="plan.isTemplate != null and plan.isTemplate != ''">
-                AND pp.is_template = #{plan.isTemplate}
             </if>
 
             <if test="plan.type != null and plan.type != ''">

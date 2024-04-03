@@ -1,6 +1,7 @@
 package com.airohit.agriculture.module.plant.service.plan;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import com.airohit.agriculture.framework.common.pojo.CommonResult;
 import com.airohit.agriculture.framework.common.pojo.PageResult;
 import com.airohit.agriculture.framework.tenant.core.context.FarmTenantContextHolder;
@@ -24,11 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -198,69 +197,62 @@ public class PlanServiceImpl implements PlanService {
 
         this.validatePlanExists(planCloneReqVO.getPlantingPlanId());
 
-        PlanDO planDO = planMapper.selectById(planCloneReqVO.getPlantingPlanId());
-        planDO.setPlanName(planCloneReqVO.getPlanName());
-        planDO.setStartTime(planCloneReqVO.getStartTime());
-        planDO.setId(null);
-        planDO.setStatus(null);
-        planDO.setCreateTime(null);
-        planDO.setUpdateTime(null);
+        PlanDO plantingPlan = planMapper.selectById(planCloneReqVO.getPlantingPlanId());
 
-        Long farmTenantId = FarmTenantContextHolder.getFarmTenantId();
-        planDO.setFarmTenantId(farmTenantId);
-
-        planMapper.insert(planDO);
-
-        List<PlanTypeDataDO> planTypeDataDOParentList = planTypeDataService.getPlanTypeDataByPlantingPlanIdAndParent(planCloneReqVO.getPlantingPlanId(), 0);
-        for (PlanTypeDataDO planTypeDataDO : planTypeDataDOParentList) {
-
-            PlanTypeDataDO planTypeDataDOCreate = new PlanTypeDataDO();
-
-            BeanUtil.copyProperties(planTypeDataDO, planTypeDataDOCreate);
-            planTypeDataDOCreate.setId(null);
-            planTypeDataDOCreate.setCreateTime(null);
-            planTypeDataDOCreate.setUpdateTime(null);
-            planTypeDataDOCreate.setPlantingPlanId(planDO.getId());
-            planTypeDataDOCreate.setFarmTenantId(farmTenantId);
-            planTypeDataMapper.insert(planTypeDataDOCreate);
-
-            log.info("==============planTypeDataId  {}", planTypeDataDOCreate.getId());
-            List<PlanTypeDataDO> planTypeDataDOChildList = planTypeDataService.getPlanTypeDataByPlantingPlanIdAndParent(planCloneReqVO.getPlantingPlanId(), planTypeDataDO.getId());
-
-            log.info("==============planTypeDataDOChildList  {}", planTypeDataDOChildList.toString());
+        Date plantStartDate = plantingPlan.getStartTime();
+        plantingPlan.setId(null);
+        plantingPlan.setPlanName(planCloneReqVO.getPlanName());
+        plantingPlan.setStartTime(planCloneReqVO.getStartTime());
+        plantingPlan.setStatus(1);
+        plantingPlan.setIsClone(Boolean.TRUE);
+        plantingPlan.setIsTemplate(0);
+        plantingPlan.setType(2);
+        plantingPlan.setCreateTime(LocalDateTime.now());
+        planMapper.insert(plantingPlan);
 
 
-            if (planTypeDataDOChildList != null && planTypeDataDOChildList.size() > 0) {
-                Integer planningCycle = 0;
-                for (int i = 0; i < planTypeDataDOChildList.size(); i++) {
-                    PlanTypeDataDO planTypeDataChildDO = planTypeDataDOChildList.get(i);
-                    if (i == 0) {
-                        planningCycle = planningCycle + planTypeDataChildDO.getPeriod();
-                        planTypeDataChildDO.setPlantingPlanDate(planCloneReqVO.getStartTime());
-                    } else {
-                        planTypeDataChildDO.setPlantingPlanDate(dateAddDays(planCloneReqVO.getStartTime(), planningCycle));
-                        planningCycle = planningCycle + planTypeDataChildDO.getPeriod();
+        List<PlanTypeDataDO> planTypeDataParentList = planTypeDataService.getPlanTypeDataByPlantingPlanIdAndParent(planCloneReqVO.getPlantingPlanId(),0);
+        //Integer planningCycle = 0;
+        int initSum = 0;
+        Date startDate = null;
+        for (PlanTypeDataDO planTypeData : planTypeDataParentList) {
+            PlanTypeDataDO planTypeDataCreate = new PlanTypeDataDO();
+            BeanUtil.copyProperties(planTypeData,planTypeDataCreate);
+            planTypeDataCreate.setId(null);
+            planTypeDataCreate.setPlantingPlanId(plantingPlan.getId());
+            planTypeDataMapper.insert(planTypeDataCreate);
+            List<PlanTypeDataDO> planTypeDataDOChildList = planTypeDataService.getPlanTypeDataByPlantingPlanIdAndParent(planCloneReqVO.getPlantingPlanId(),planTypeData.getId());
+
+            if (planTypeDataDOChildList != null && planTypeDataDOChildList.size() > 0){
+                for (int i = 0; i < planTypeDataDOChildList.size(); i++){
+                    PlanTypeDataDO planTypeDataChild = planTypeDataDOChildList.get(i);
+                    if(initSum==0) {
+                        initSum ++;
+                        int distanceByDay1 = getDistanceByDay(plantStartDate, planTypeDataChild.getPlantingPlanDate());
+                        startDate =  planTypeDataChild.getPlantingPlanDate();
+                        //planningCycle = planningCycle + planTypeDataChild.getPeriod();
+                        planTypeDataChild.setPlantingPlanDate(dateAddDays(planCloneReqVO.getStartTime(),distanceByDay1));
+                    }else {
+                        int distanceByDay2 = getDistanceByDay(startDate, planTypeDataChild.getPlantingPlanDate());
+                        planTypeDataChild.setPlantingPlanDate(dateAddDays(planCloneReqVO.getStartTime(), distanceByDay2));
+                        //planningCycle = planningCycle + planTypeDataChild.getPeriod();
                     }
 
-                    planTypeDataChildDO.setPlantingPlanId(planDO.getId());
-                    planTypeDataChildDO.setSort(i);
-                    planTypeDataChildDO.setPeriodName(planTypeDataChildDO.getPeriodName());
-                    planTypeDataChildDO.setStageCode(planTypeDataChildDO.getStageCode());
-                    planTypeDataChildDO.setStageName(planTypeDataChildDO.getStageName());
-                    planTypeDataChildDO.setPeriod(planTypeDataChildDO.getPeriod());
-                    planTypeDataChildDO.setId(null);
-                    planTypeDataChildDO.setParentId(planTypeDataDOCreate.getId());
-                    planTypeDataChildDO.setCreateTime(null);
-                    planTypeDataChildDO.setUpdateTime(null);
-                    planTypeDataChildDO.setFarmTenantId(farmTenantId);
-                    planTypeDataMapper.insert(planTypeDataChildDO);
+                    PlanTypeDataDO createPlanTypeData = new PlanTypeDataDO();
+                    planTypeDataChild.setPlantingPlanId(plantingPlan.getId());
+                    planTypeDataChild.setSort(i);
+                    planTypeDataChild.setPeriodName(planTypeDataChild.getPeriodName());
+                    planTypeDataChild.setStageCode(planTypeDataChild.getStageCode());
+                    planTypeDataChild.setStageName(planTypeDataChild.getStageName());
+                    planTypeDataChild.setPeriod(planTypeDataChild.getPeriod());
+                    planTypeDataChild.setId(null);
+                    planTypeDataChild.setParentId(planTypeDataCreate.getId());
+                    BeanUtil.copyProperties(planTypeDataChild,createPlanTypeData);
+                    planTypeDataMapper.insert(createPlanTypeData);
                 }
             }
-
-            log.info("planCloneReqVO.getPlantingPlanId() ==== {}   planDO.getId() ===== {}", planCloneReqVO.getPlantingPlanId(), planDO.getId());
-
-            taskInfoService.clonePlanTask(planCloneReqVO.getPlantingPlanId(), planDO.getId());
         }
+        taskInfoService.clonePlanTask(planCloneReqVO.getPlantingPlanId(),plantingPlan.getId());
     }
 
     @Override
@@ -439,5 +431,34 @@ public class PlanServiceImpl implements PlanService {
         Long farmTenantId = FarmTenantContextHolder.getFarmTenantId();
         planDO.setFarmTenantId(farmTenantId);
         planMapper.update(planDO, updateWrapper);
+    }
+
+    /**
+     * 两日期之间的间隔
+     * @param beginDate 开始时间
+     * @param endDate   结束时间
+     * @return 返回day
+     */
+    private static int getDistanceByDay(Date beginDate,Date endDate ) {
+        Calendar beginCalendar = Calendar.getInstance();
+        beginCalendar.setTime(beginDate);
+
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTime(endDate);
+
+        long beginTime=beginCalendar.getTimeInMillis();
+        long endTime=endCalendar.getTimeInMillis();
+        //先算出两时间的毫秒数之差大于一天的天数
+        int betweenDays = (int)((endTime - beginTime) / (1000 * 60 * 60 *24));
+        //使endCalendar减去这些天数，将问题转换为两时间的毫秒数之差不足一天的情况
+        endCalendar.add(Calendar.DAY_OF_MONTH, -betweenDays);
+        //再使endCalendar减去1天
+        endCalendar.add(Calendar.DAY_OF_MONTH, -1);
+        //比较两日期的DAY_OF_MONTH是否相等
+        if(beginCalendar.get(Calendar.DAY_OF_MONTH)==endCalendar.get(Calendar.DAY_OF_MONTH)){
+            return betweenDays + 1;    //相等说明确实跨天了
+        } else{
+            return betweenDays;    //不相等说明确实未跨天
+        }
     }
 }

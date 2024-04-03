@@ -62,7 +62,7 @@ mqtt:
   client:
     enabled: true               # 是否开启客户端，默认：true
     ip: xx.xx.xx.xx               # 连接的服务端 ip ，默认：127.0.0.1
-    port: 1884                  # 端口：默认：1883
+    port: 1884                  # 端口：默认：1884
     name: ${spring.application.name}-${server.port}     # 名称，默认：为应用名称+端口号
     clientId: ${spring.application.name}-${server.port}            # 客户端Id（非常重要，一般为设备 sn，不可重复）
     user-name: xxx            # 认证的用户名

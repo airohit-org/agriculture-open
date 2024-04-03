@@ -89,7 +89,7 @@ public class WeatherServiceImpl implements WeatherService {
     private String grid_url;
 
     @Value("${weather.radar.radar_url}")
-    private static String radar_url;
+    private String radar_url;
 
     @Value("${weather.rain.url_rain}")
     private String url_rain;
@@ -100,12 +100,67 @@ public class WeatherServiceImpl implements WeatherService {
 
 
 
+    @Value("${weatherDate.todayWeather.dailyString}")
+    private String todayDailyString;
+    @Value("${weatherDate.todayWeather.hourlyString}")
+    private String hourlyString;
+
+    @Value("${weatherDate.Weather10.dailyString}")
+    private String dailyString;
+
+    @Value("${weatherDate.rain.result}")
+    private String result;
+    @Value("${weatherDate.rain.hourlyString}")
+    private String rainHourlyString;
+    @Value("${weatherDate.rain.series}")
+    private String series;
+
+    @Value("${weatherDate.damage.alerts}")
+    private String alerts;
+
+    @Value("${weatherDate.grid.a}")
+    private String a;
+
+    @Value("${weatherDate.weather24.dailyString}")
+    private String day24DailyString;
+
+    @Value("${weather.state}")
+    private Boolean state;
+
+
 
     @Override
     @TenantIgnore
     @FarmTenantIgnore
+    // ok
     public WeatherVO getTodayWeather() {
 
+        WeatherVO weatherVO = new WeatherVO();
+
+        if (!state){
+            JSONArray daily_jsonArray = JSONArray.parseArray(todayDailyString);
+            Object[] daily_array = daily_jsonArray.toArray();
+            for (Object o : daily_array){
+                Gson gson = new Gson();
+                Daily daily = gson.fromJson(o.toString(),Daily.class);
+                weatherVO.setMinimumTemperature(daily.getLow());
+                weatherVO.setMaximumTemperature(daily.getHigh());
+            }
+
+            JSONArray hourly_jsonArray = JSONArray.parseArray(hourlyString);
+            Object[] hourly_array = hourly_jsonArray.toArray();
+            for (Object o : hourly_array){
+                Gson gson_hour = new Gson();
+                Hourly hourly = gson_hour.fromJson(o.toString(),Hourly.class);
+                weatherVO.setWeatherName(hourly.getText());
+                weatherVO.setWeatherCode(hourly.getCode());
+                weatherVO.setTemperature(hourly.getTemp_fc());
+                weatherVO.setWindDirection(hourly.getWind_dir());
+                weatherVO.setWindSpeed(hourly.getWind_dir());
+            }
+
+            return weatherVO;
+        }
 
         Long id= FarmTenantContextHolder.getFarmTenantId();
         FarmDO farmDO = weatherFarmMapper.selectById(id);
@@ -115,14 +170,12 @@ public class WeatherServiceImpl implements WeatherService {
         String lon = farmLonlats[1];
         String lonlat = lon + "," + lat;
 
-
         String api_day= url_15 + lonlat + key;
         String api_hour= url_240 + lonlat +hour + key;
 
-        WeatherVO weatherVO = new WeatherVO();
-
         JSONObject jsonObject_day = JSONObject.parseObject(HttpUtil.get(api_day));
         String dailyString  = ((JSONObject) jsonObject_day.get("result")).get("daily_fcsts").toString();
+
         JSONArray daily_jsonArray = JSONArray.parseArray(dailyString);
         Object[] daily_array = daily_jsonArray.toArray();
         for (Object o : daily_array){
@@ -134,6 +187,7 @@ public class WeatherServiceImpl implements WeatherService {
 
         JSONObject jsonObject_hour = JSONObject.parseObject(HttpUtil.get(api_hour));
         String hourlyString  = ((JSONObject) jsonObject_hour.get("result")).get("grid_hourly").toString();
+
         JSONArray hourly_jsonArray = JSONArray.parseArray(hourlyString);
         Object[] hourly_array = hourly_jsonArray.toArray();
         for (Object o : hourly_array){
@@ -154,26 +208,43 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     @TenantIgnore
     @FarmTenantIgnore
+    // ok
     public List<WeatherDaysVO> getWeather10() {
 
+        List<WeatherDaysVO> list = new ArrayList<>();
+
+        if (!state) {
+            JSONArray daily_jsonArray = JSONArray.parseArray(dailyString);
+            Object[] daily_array = daily_jsonArray.toArray();
+            for (Object o : daily_array) {
+                Gson gson = new Gson();
+                WeatherDaysBaseVO daily = gson.fromJson(o.toString(), WeatherDaysBaseVO.class);
+                WeatherDaysVO weatherDaysVO = new WeatherDaysVO();
+                weatherDaysVO.setMinimumTemperature(daily.getLow());
+                weatherDaysVO.setMaximumTemperature(daily.getHigh());
+                weatherDaysVO.setWeatherDate(daily.getDate().substring(5));
+                list.add(weatherDaysVO);
+            }
+            return list;
+        }
+
         Long id= FarmTenantContextHolder.getFarmTenantId();
-        System.out.println(id);
+        //System.out.println(id);
         FarmDO farmDO = weatherFarmMapper.selectById(id);
-        System.out.println(farmDO);
+        //System.out.println(farmDO);
         String latlon = farmDO.getCoordinateCenter();
         String[] farmLonlats = latlon.split(",");
         String lat = farmLonlats[0];
         String lon = farmLonlats[1];
         String lonlat = lon + "," + lat;
 
-
         String api_day= url_future + lonlat + key;
-        System.out.println(api_day);
-        List<WeatherDaysVO> list = new ArrayList<>();
+        //System.out.println(api_day);
 
         // 15天
         JSONObject jsonObject_day = JSONObject.parseObject(HttpUtil.get(api_day));
         String dailyString  = ((JSONObject) jsonObject_day.get("result")).get("daily_fcsts").toString();
+
         JSONArray daily_jsonArray = JSONArray.parseArray(dailyString);
         Object[] daily_array = daily_jsonArray.toArray();
         for (Object o : daily_array){
@@ -192,7 +263,36 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     @TenantIgnore
     @FarmTenantIgnore
+    //ok
     public List<WeatherRainVO> getWeatherRain() {
+
+        if (!state){
+            JSONArray hourly_jsonArray = JSONArray.parseArray(rainHourlyString);
+
+            Object[] hourly_array = hourly_jsonArray.toArray();
+            WeatherRainVoTemp temp = new WeatherRainVoTemp();
+            for (Object o : hourly_array){
+                Gson gson_hour = new Gson();
+                temp = gson_hour.fromJson(o.toString(),WeatherRainVoTemp.class);
+            }
+
+            List<WeatherRainVO> list = new ArrayList<>();
+            LocalDateTime baseTime = LocalDateTime.now();
+            Gson gson_result = new Gson();
+            JSONArray jsonArray = JSONArray.parseArray(series);
+            Object[] array = jsonArray.toArray();
+            int i = 0;
+            for (Object o : array){
+                WeatherRainVO weatherRainVO = gson_result.fromJson(result, WeatherRainVO.class);
+                weatherRainVO.setTempFc(temp.getTemp_fc());
+
+                weatherRainVO.setDataTime(String.valueOf(baseTime.plusMinutes(i)));
+                weatherRainVO.setRain(String.valueOf(o));
+                i = i+1;
+                list.add(weatherRainVO);
+            }
+            return list;
+        }
 
         Long id= FarmTenantContextHolder.getFarmTenantId();
         FarmDO farmDO = weatherFarmMapper.selectById(id);
@@ -205,9 +305,14 @@ public class WeatherServiceImpl implements WeatherService {
         String api_hour = url_hour + lonlat +  url_rain_hour + key;
         String api = url_rain +  lonlat + key;
 
+//        System.out.println(api_hour);
+//        System.out.println(api);
+
         JSONObject jsonObject_hour = JSONObject.parseObject(HttpUtil.get(api_hour));
         String hourlyString  = ((JSONObject) jsonObject_hour.get("result")).get("grid_hourly").toString();
+
         JSONArray hourly_jsonArray = JSONArray.parseArray(hourlyString);
+
         Object[] hourly_array = hourly_jsonArray.toArray();
         WeatherRainVoTemp temp = new WeatherRainVoTemp();
         for (Object o : hourly_array){
@@ -215,12 +320,13 @@ public class WeatherServiceImpl implements WeatherService {
             temp = gson_hour.fromJson(o.toString(),WeatherRainVoTemp.class);
         }
 
-        List<WeatherRainVO> list = new ArrayList<>();
-        LocalDateTime baseTime = LocalDateTime.now();
-        JSONObject jsonObject = JSONObject.parseObject(HttpUtil.get(api));
-        Object result = jsonObject.get("result");
+       List<WeatherRainVO> list = new ArrayList<>();
+       LocalDateTime baseTime = LocalDateTime.now();
+       JSONObject jsonObject = JSONObject.parseObject(HttpUtil.get(api));
+       Object result = jsonObject.get("result");
+       String series  = ((JSONObject) jsonObject.get("result")).get("series").toString();
+
         Gson gson_result = new Gson();
-        String series  = ((JSONObject) jsonObject.get("result")).get("series").toString();
 
         // 没雨
         if (Objects.equals(series, "[]")){
@@ -240,6 +346,7 @@ public class WeatherServiceImpl implements WeatherService {
         for (Object o : array){
             WeatherRainVO weatherRainVO = gson_result.fromJson(result.toString(), WeatherRainVO.class);
             weatherRainVO.setTempFc(temp.getTemp_fc());
+
             weatherRainVO.setDataTime(String.valueOf(baseTime.plusMinutes(i)));
             weatherRainVO.setRain(String.valueOf(o));
             i = i+1;
@@ -248,10 +355,40 @@ public class WeatherServiceImpl implements WeatherService {
         return list;
     }
 
+
+
     @Override
     @TenantIgnore
     @FarmTenantIgnore
+    // ok
     public List<WeatherDamageVO> getWeatherDamage() {
+
+        List<WeatherDamageVO> list = new ArrayList<>();
+        List<String> damageList = Arrays.asList(
+                "0",
+                "台风", "暴雨", "暴雪", "寒潮",
+                "大风", "沙尘暴", "高温", "干旱",
+                "雷电", "冰雹", "霜冻", "大雾");
+
+        if (!state){
+            JSONArray jsonArray = JSONArray.parseArray(alerts);
+            Object[] array = jsonArray.toArray();
+            for (Object o : array) {
+                Gson gson = new Gson();
+                WeatherDamageVO weatherDamageVO = gson.fromJson(o.toString(),WeatherDamageVO.class);
+                String type = weatherDamageVO.getType();
+
+                for (int i =0 ;i<damageList.size() ; i++) {
+                    if (damageList.get(i) == type) {
+                        weatherDamageVO.setTypeId(String.valueOf(i));
+                        list.add(weatherDamageVO);
+                    }
+                }
+                weatherDamageVO.setCreateDate(String.valueOf(LocalDateTime.now()));
+            }
+            return list;
+
+        }
 
         Long id= FarmTenantContextHolder.getFarmTenantId();
         FarmDO farmDO = weatherFarmMapper.selectById(id);
@@ -262,17 +399,14 @@ public class WeatherServiceImpl implements WeatherService {
         String lonlat = lon + "," + lat;
 
         String api = damage_url + lonlat + key;
-        List<WeatherDamageVO> list = null;
-        List<String> damageList = Arrays.asList(
-                "0",
-                "台风", "暴雨", "暴雪", "寒潮",
-                "大风", "沙尘暴", "高温", "干旱",
-                "雷电", "冰雹", "霜冻", "大雾");
+
+        //System.out.println(api);
 
         JSONObject jsonObject = JSONObject.parseObject(HttpUtil.get(api));
         String alerts  = ((JSONObject) jsonObject.get("result")).get("alerts").toString();
+
         if (Objects.equals(alerts, "[]")){
-            return null;
+            return list;
         }
         JSONArray jsonArray = JSONArray.parseArray(alerts);
         Object[] array = jsonArray.toArray();
@@ -299,18 +433,19 @@ public class WeatherServiceImpl implements WeatherService {
     @FarmTenantIgnore
     public WeatherGridVO getWeatherGrid(String lonlat) {
 
-//        Long id= FarmTenantContextHolder.getFarmTenantId();
-//        FarmDO farmDO = weatherFarmMapper.selectById(id);
-//        String latlon = farmDO.getCoordinateCenter();
-//        String[] farmLonlats = latlon.split(",");
-//        String lat = farmLonlats[0];
-//        String lon = farmLonlats[1];
-//        String lonlat = lon + "," + lat;
+        if (!state){
+            Gson gson = new Gson();
+            WeatherGridVO weatherGridVO = gson.fromJson(a,WeatherGridVO.class);
+            weatherGridVO.setCreateDate(String.valueOf(LocalDateTime.now()));
+
+            return weatherGridVO;
+        }
 
         String api = grid_url + lonlat + key;
 
         JSONObject jsonObject = JSONObject.parseObject(HttpUtil.get(api));
         Object a  = ((JSONObject) jsonObject.get("result")).get("grid_now");
+
         Gson gson = new Gson();
         WeatherGridVO weatherGridVO = gson.fromJson(a.toString(),WeatherGridVO.class);
         weatherGridVO.setCreateDate(String.valueOf(LocalDateTime.now()));
@@ -318,17 +453,59 @@ public class WeatherServiceImpl implements WeatherService {
         return weatherGridVO;
     }
 
+
+
     @Override
     @TenantIgnore
     @FarmTenantIgnore
-    public List<WeatherHour> getWeatherDay24() {
+    public List<WeatherHour> getWeatherDay24() throws ParseException {
+
+        if (!state){
+            List<WeatherHour> list = new ArrayList<>();
+
+            JSONArray daily_jsonArray = JSONArray.parseArray(day24DailyString);
+            Object[] daily_array = daily_jsonArray.toArray();
+
+            for (Object o : daily_array){
+                Gson gson = new Gson();
+                WeatherHourBaseVO weatherHourBaseVO = gson.fromJson(o.toString(),WeatherHourBaseVO.class);
+                weatherHourBaseVO.setDate(weatherHourBaseVO.getData_time().substring(0,10));
+                weatherHourBaseVO.setTime(weatherHourBaseVO.getData_time().substring(11));
+
+                WeatherHour weatherHour = new WeatherHour();
+                weatherHour.setCode(weatherHourBaseVO.getCode());
+                weatherHour.setText(weatherHourBaseVO.getText());
+                weatherHour.setTempFc(weatherHourBaseVO.getTemp_fc());
+                weatherHour.setRh(weatherHourBaseVO.getRh());
+                weatherHour.setWindClass(weatherHourBaseVO.getWind_class());
+                weatherHour.setWindSpeed(weatherHourBaseVO.getWind_speed());
+                weatherHour.setWindDir(weatherHourBaseVO.getWind_dir());
+
+                SimpleDateFormat dateDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateDate = new SimpleDateFormat("yyyy-MM-dd");
+                //SimpleDateFormat dateTime = new SimpleDateFormat("HH:mm:ss");
+
+                weatherHour.setDataTime(dateDateTime.parse(weatherHourBaseVO.getData_time()));
+                weatherHour.setDate(dateDate.parse(weatherHourBaseVO.getDate()));
+
+                DateTimeFormatter dateFormat_3 = DateTimeFormatter.ofPattern("HH:mm:ss");
+                LocalTime time = LocalTime.parse(weatherHourBaseVO.getTime(), dateFormat_3);
+                weatherHour.setTime(Time.valueOf(time));
+
+
+                //System.out.println(weatherHourBaseVO);
+                list.add(weatherHour);
+            }
+
+            return list;
+        }
+
 
         Long id= FarmTenantContextHolder.getFarmTenantId();
 
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = currentDate.format(formatter);
-
         return weatherHourMapper.selectDay24(id,date);
     }
 
@@ -336,6 +513,12 @@ public class WeatherServiceImpl implements WeatherService {
     @TenantIgnore
     @FarmTenantIgnore
     public List<WeatherRadar> getWeatherRadar() {
+
+        if (!state){
+            List<WeatherRadar> list = new ArrayList<>();
+            return list;
+        }
+
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = currentDate.format(formatter);
@@ -347,11 +530,12 @@ public class WeatherServiceImpl implements WeatherService {
         Date first = Date.from(a.atZone(ZoneId.systemDefault()).toInstant());
         Date last = Date.from(b.atZone(ZoneId.systemDefault()).toInstant());
 
-
         return weatherRadarMapper.selectRadar(first,last);
     }
 
-    @Scheduled(cron = "0 30 00 * * ?")
+
+
+    //@Scheduled(cron = "0 30 00 * * ?")
     @TenantIgnore
     @FarmTenantIgnore
     public void createWeatherHours() throws ParseException {
@@ -419,7 +603,7 @@ public class WeatherServiceImpl implements WeatherService {
         return list;
     }
 
-    @Scheduled(cron = "0 */10 * * * ?")
+    //@Scheduled(cron = "0 */10 * * * ?")
     @TenantIgnore
     @FarmTenantIgnore
     public void createWeatherRadar(){

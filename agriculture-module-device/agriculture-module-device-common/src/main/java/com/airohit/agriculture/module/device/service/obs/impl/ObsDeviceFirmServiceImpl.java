@@ -98,7 +98,6 @@ public class ObsDeviceFirmServiceImpl implements ObsDeviceFirmService {
     }
 
     @Override
-    @FarmTenantIgnore
     @TenantIgnore
     public CommonResult<Integer> createInfo(ObsDeviceFirmCreateDto obsDeviceFirmCreateDto) {
         ObsDeviceFirmDO obsDeviceFirmDO = obsDeviceFirmMapper.selectOne(new LambdaQueryWrapperX<ObsDeviceFirmDO>().eq(ObsDeviceFirmDO::getFirmId, obsDeviceFirmCreateDto.getFirmId())
@@ -113,7 +112,6 @@ public class ObsDeviceFirmServiceImpl implements ObsDeviceFirmService {
     }
 
     @Override
-    @FarmTenantIgnore
     @TenantIgnore
     public CommonResult<Boolean> updateInfo(ObsDeviceFirmUpdateDto updateDto) {
         ObsDeviceFirmDO obsDeviceFirmDO = obsDeviceFirmMapper.selectOne(new LambdaQueryWrapperX<ObsDeviceFirmDO>().eq(ObsDeviceFirmDO::getFirmId, updateDto.getFirmId())
@@ -171,9 +169,9 @@ public class ObsDeviceFirmServiceImpl implements ObsDeviceFirmService {
     @Override
     @TenantIgnore
     @FarmTenantIgnore
-    public CommonResult<String> getFirmName(Integer firmId) {
+    public String getFirmName(Integer firmId) {
         ObsSystemFirmDO obsSystemFirmDO = obsSystemFirmMapper.selectById(firmId);
-        return success(obsSystemFirmDO.getFirmName());
+        return obsSystemFirmDO.getFirmName();
     }
 
     @Override

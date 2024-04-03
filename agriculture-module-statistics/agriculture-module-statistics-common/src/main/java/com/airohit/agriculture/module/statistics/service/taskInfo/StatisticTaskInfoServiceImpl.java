@@ -33,29 +33,20 @@ public class StatisticTaskInfoServiceImpl implements StatisticTaskInfoService {
     public List<TaskInfoStatusVo> getTaskInfoStatistic() {
         List<TaskInfoRespVo> taskInfoRespVoList = statisticTaskInfoMapper.getTaskInfoRespVoPage();
         taskInfoRespVoList.forEach(taskInfoRespVo -> taskInfoRespVo.setTaskStatus(getTaskStatusList(taskInfoRespVo)));
-        int total = taskInfoRespVoList.size();
         LinkedHashMap<String, TaskStatusEnum> enumMap = EnumUtil.getEnumMap(TaskStatusEnum.class);
         List<TaskInfoStatusVo> list = new ArrayList<>();
-        if (total > 0) {
-            Map<Integer, List<TaskInfoRespVo>> collect = taskInfoRespVoList.stream().collect(Collectors.groupingBy(TaskInfoRespVo::getTaskStatus));
-            for (Integer integer : collect.keySet()) {
-                enumMap.remove(EnumUtil.toString(TaskStatusEnum.getByStatus(integer)));
-                int size = Optional.ofNullable(collect.get(integer)).orElse(new ArrayList<>()).size();
-                TaskInfoStatusVo taskInfoStatusVo = new TaskInfoStatusVo();
-                taskInfoStatusVo.setName(TaskStatusEnum.getByStatus(integer).getName());
-                taskInfoStatusVo.setValue(size);
-                list.add(taskInfoStatusVo);
-            }
-        }
+        Map<Integer, List<TaskInfoRespVo>> collect = taskInfoRespVoList.stream().collect(Collectors.groupingBy(TaskInfoRespVo::getTaskStatus));
         for (String s : enumMap.keySet()) {
             TaskStatusEnum taskStatusEnum = enumMap.get(s);
+            int size = Optional.ofNullable(collect.get(taskStatusEnum.getStatus())).orElse(new ArrayList<>()).size();
             TaskInfoStatusVo taskInfoStatusVo = new TaskInfoStatusVo();
             taskInfoStatusVo.setName(taskStatusEnum.getName());
-            taskInfoStatusVo.setValue(0);
+            taskInfoStatusVo.setValue(size);
             list.add(taskInfoStatusVo);
         }
         return list;
     }
+
 
 
     private Integer getTaskStatusList(TaskInfoRespVo taskInfoDO) {

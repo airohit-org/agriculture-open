@@ -78,11 +78,9 @@ public class ObsDeviceBizController {
     @PostMapping("/claimDevice")
     @ApiOperation("新增设备")
     public CommonResult<ObsDeviceVo> claimDevice(@RequestBody ObsDeviceClaimDto obsDeviceClaimDto) {
-        CommonResult<String> firmName = obsDeviceFirmService.getFirmName(obsDeviceClaimDto.getFirmId());
-        if (firmName.getCode() == 0) {
-            if (firmName.getData().equals("聚英科技"))
-                obsDeviceService.createJuYingService(obsDeviceClaimDto);
-        }
+        String firmName = obsDeviceFirmService.getFirmName(obsDeviceClaimDto.getFirmId());
+        if (firmName.equals("聚英科技"))
+            obsDeviceService.createJuYingService(obsDeviceClaimDto);
         return success(obsDeviceService.claimDevice(obsDeviceClaimDto));
     }
 
@@ -90,11 +88,10 @@ public class ObsDeviceBizController {
     @ApiOperation("自动获取ip端口模板")
     public CommonResult<ObsDeviceIpVo> getIpAndPort(@RequestParam("firmId") Integer firmId) {
         ObsDeviceIpVo ipAndPort = new ObsDeviceIpVo();
-        CommonResult<String> firmName = obsDeviceFirmService.getFirmName(firmId);
-        if (firmName.getCode() == 0)
-            if (firmName.getData().equals("聚英科技")) {
-                ipAndPort = obsDeviceService.getIpAndPort();
-            }
+        String firmName = obsDeviceFirmService.getFirmName(firmId);
+        if (firmName.equals("聚英科技")) {
+            ipAndPort = obsDeviceService.getIpAndPort();
+        }
         return success(ipAndPort);
     }
 
@@ -109,11 +106,9 @@ public class ObsDeviceBizController {
     @ApiImplicitParam(name = "id", value = "设备id", required = true, dataTypeClass = Integer.class)
     public CommonResult<Boolean> deleteDevice(@RequestParam("id") Integer id) {
         ObsDeviceVo one = obsDeviceService.getOne(id);
-        CommonResult<String> firmName = obsDeviceFirmService.getFirmName(one.getFirmId());
-        if (firmName.getCode() == 0) {
-            if (firmName.getData().equals("聚英科技"))
-                obsDeviceService.juYingKillPort(one.getDeviceServicePort());
-        }
+        String firmName = obsDeviceFirmService.getFirmName(one.getFirmId());
+        if (firmName.equals("聚英科技"))
+            obsDeviceService.juYingKillPort(one.getDeviceServicePort());
         return success(obsDeviceService.deleteDevice(id));
     }
 

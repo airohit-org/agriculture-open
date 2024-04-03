@@ -61,4 +61,18 @@ public class StatisticsController {
     public CommonResult<FarmStatisticVo> getFarmStatisticVo() {
         return success(farmService.getFarmStatisticVo());
     }
+
+    @GetMapping("/getFarmInfos")
+    @ApiOperation("获得农场信息")
+    @PermitAll
+    public CommonResult<List<Long>> getFarmInfos() {
+        return success(farmService.getFarmInfos());
+    }
+
+
+
+
+
+
+
 }

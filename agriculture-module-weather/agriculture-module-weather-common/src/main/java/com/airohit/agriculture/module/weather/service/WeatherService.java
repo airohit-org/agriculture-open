@@ -13,6 +13,7 @@ import com.airohit.agriculture.module.weather.vo.futureday.WeatherDaysVO;
 import com.airohit.agriculture.module.weather.vo.today.WeatherVO;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,8 @@ public interface WeatherService {
 
     WeatherGridVO getWeatherGrid(String lonlat);
 
-    List<WeatherHour> getWeatherDay24();
+    List<WeatherHour> getWeatherDay24() throws ParseException;
 
     List<WeatherRadar> getWeatherRadar();
+
 }

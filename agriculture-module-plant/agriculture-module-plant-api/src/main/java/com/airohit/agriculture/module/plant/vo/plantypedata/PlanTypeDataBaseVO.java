@@ -31,14 +31,12 @@ public class PlanTypeDataBaseVO {
     private Integer plantingPlanId;
 
     @ApiModelProperty(value = "周期（天）", required = true)
-    @NotNull(message = "周期（天）不能为空")
     private Integer period;
 
     @ApiModelProperty(value = "周期名称 （3月低-6月初）", required = false)
     private String periodName;
 
     @ApiModelProperty(value = "计划日期", required = true)
-    @NotNull(message = "计划日期不能为空")
     private Date plantingPlanDate;
 
 

@@ -74,7 +74,7 @@ public interface PlanMapper extends BaseMapperX<PlanDO> {
      * @param landId
      * @return
      */
-    @Select("select id as planId, plan_name as planName from planting_plan where land_id = #{landId} LIMIT 1")
+    @Select("select id as planId, plan_name as planName from planting_plan where deleted=0 and land_id = #{landId} LIMIT 1")
     PlanRespDTO getPlanByLandId(@Param("landId") Integer landId);
 
     @Update("update planting_plan set land_id = NULL where id = #{planId}")

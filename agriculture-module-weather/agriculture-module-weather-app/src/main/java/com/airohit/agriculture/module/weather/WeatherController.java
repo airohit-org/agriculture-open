@@ -16,7 +16,6 @@ import com.airohit.agriculture.module.weather.vo.today.WeatherVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
-import java.util.Date;
+import java.text.ParseException;
 import java.util.List;
 
 import static com.airohit.agriculture.framework.common.pojo.CommonResult.success;
@@ -87,7 +86,7 @@ public class WeatherController {
     @GetMapping("/getWeather24Hour")
     @ApiOperation("获得24小时预报")
     @PermitAll
-    public CommonResult<List<WeatherHourVO>> getWeather24Hour() {
+    public CommonResult<List<WeatherHourVO>> getWeather24Hour() throws ParseException {
         List<WeatherHour> list = weatherService.getWeatherDay24();
         return success(WeatherDay24Convert.INSTANCE.convertList(list));
     }

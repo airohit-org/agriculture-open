@@ -30,7 +30,7 @@ public interface ObsDeviceFirmService {
 
     CommonResult<ObsDeviceFirmVo> getOne(Integer id);
 
-    CommonResult<String> getFirmName(Integer firmId);
+    String getFirmName(Integer firmId);
 
     void deleteByFirmId(Integer id);
 

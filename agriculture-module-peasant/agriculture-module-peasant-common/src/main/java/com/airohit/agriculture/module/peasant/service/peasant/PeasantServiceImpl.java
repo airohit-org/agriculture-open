@@ -50,13 +50,13 @@ public class PeasantServiceImpl implements PeasantService {
         String phone = peasantDO.getPhone();
         if (Mapper.selectByPhone(phone) == null) {
 
-//            // 密码加密
-//            RSA rsa = new RSA(PRIVATE_KAY, PUBLIC_KSY);
-//            //解密密码
-//            String password = new String(
-//                    rsa.decrypt(Base64.getDecoder().decode(peasantDO.getPassWord().getBytes(StandardCharsets.UTF_8))
-//                            , KeyType.PrivateKey), StandardCharsets.UTF_8);
-//            peasantDO.setPassWord(password);
+            // 密码加密
+            RSA rsa = new RSA(PRIVATE_KAY, PUBLIC_KSY);
+            //解密密码
+            String password = new String(
+                    rsa.decrypt(Base64.getDecoder().decode(peasantDO.getPassWord().getBytes(StandardCharsets.UTF_8))
+                            , KeyType.PrivateKey), StandardCharsets.UTF_8);
+            peasantDO.setPassWord(password);
 
             Mapper.insert(peasantDO);
             // 返回

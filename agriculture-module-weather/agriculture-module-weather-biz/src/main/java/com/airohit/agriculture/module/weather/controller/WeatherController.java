@@ -7,6 +7,7 @@ import com.airohit.agriculture.module.weather.dal.dataobject.weather.WeatherHour
 import com.airohit.agriculture.module.weather.dal.dataobject.weather.WeatherRadar;
 import com.airohit.agriculture.module.weather.service.WeatherService;
 import com.airohit.agriculture.module.weather.vo.damage.WeatherDamageVO;
+import com.airohit.agriculture.module.weather.vo.day24.WeatherHourBaseVO;
 import com.airohit.agriculture.module.weather.vo.day24.WeatherHourVO;
 import com.airohit.agriculture.module.weather.vo.futureday.WeatherDaysVO;
 import com.airohit.agriculture.module.weather.vo.grid.WeatherGridVO;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
+import java.text.ParseException;
 import java.util.*;
 
 import static com.airohit.agriculture.framework.common.pojo.CommonResult.success;
@@ -88,10 +90,11 @@ public class WeatherController {
     @GetMapping("/getWeather24Hour")
     @ApiOperation("获得24小时预报")
     @PermitAll
-    public CommonResult<List<WeatherHourVO>> getWeather24Hour() {
+    public CommonResult<List<WeatherHourVO>> getWeather24Hour() throws ParseException {
         List<WeatherHour> list = weatherService.getWeatherDay24();
         return success(WeatherDay24Convert.INSTANCE.convertList(list));
     }
+
 
     // 历史 定时任务
     @GetMapping("/getWeatherRadar")
@@ -99,8 +102,13 @@ public class WeatherController {
     @PermitAll
     public CommonResult<List<WeatherRadarVO>> getWeatherRadar() {
         List<WeatherRadar> list = weatherService.getWeatherRadar();
+        if (list == null){
+            return success(Collections.emptyList());
+        }
         return success(WeatherRadarConvert.INSTANCE.convertList(list));
     }
+
+
 
 
 

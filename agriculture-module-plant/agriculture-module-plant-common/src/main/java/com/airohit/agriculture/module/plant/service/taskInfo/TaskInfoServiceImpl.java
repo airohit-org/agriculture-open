@@ -7,6 +7,7 @@ import cn.hutool.core.util.ClassUtil;
 import com.airohit.agriculture.framework.common.pojo.PageResult;
 import com.airohit.agriculture.framework.mybatis.core.query.LambdaQueryWrapperX;
 import com.airohit.agriculture.framework.redis.core.RedisLock;
+import com.airohit.agriculture.framework.tenant.core.aop.FarmTenantIgnore;
 import com.airohit.agriculture.framework.tenant.core.aop.TenantIgnore;
 import com.airohit.agriculture.framework.tenant.core.context.TenantContextHolder;
 import com.airohit.agriculture.framework.tenant.core.util.TenantUtils;
@@ -99,6 +100,8 @@ public class TaskInfoServiceImpl implements TaskInfoService {
     private MessageApi messageApi;
 
     @Override
+    @TenantIgnore
+    @FarmTenantIgnore
     public JSONArray getTaskFiled(String name) {
         return JSONArray.parseArray(StringEscapeUtils.unescapeJson(taskInfoMapper.getTaskFiled(name)));
     }
