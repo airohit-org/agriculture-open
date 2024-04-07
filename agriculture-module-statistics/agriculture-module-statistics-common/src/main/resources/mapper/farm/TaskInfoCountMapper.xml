@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.airohit.agriculture.module.statistics.dal.mysql.farmInfo.TaskInfoCountMapper">
+    <!--
+        一般情况下，尽可能使用 Mapper 进行 CRUD 增删改查即可。
+        无法满足的场景，例如说多表关联查询，才使用 XML 编写 SQL。
+        代码生成器暂时只生成 Mapper XML 文件本身，更多推荐 MybatisX 快速开发插件来生成查询。
+     -->
+
+    <select id="getTaskInfoCount" resultType="java.lang.Long">
+        SELECT
+            COUNT(agro_task_info.id)
+        FROM
+            agro_task_info
+                LEFT JOIN planting_plan ON agro_task_info.planting_plan_id = planting_plan.id
+                LEFT JOIN land ON planting_plan.land_id = land.id
+                LEFT JOIN planting_plan_type_data ON planting_plan.id = planting_plan_type_data.planting_plan_id
+        WHERE
+            agro_task_info.planning_stage = planting_plan_type_data.stage_code
+          AND agro_task_info.deleted = 0
+          AND planting_plan.land_id IS NOT NULL
+    </select>
+
+
+
+</mapper>
