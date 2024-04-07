@@ -46,7 +46,7 @@
 </template>
 
 <script setup name="AuthRole">
-import { getAuthRole, updateAuthRole } from "@/api/system/user";
+import { updateAuthRole } from "@/api/system/user";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();
@@ -90,23 +90,23 @@ function submitForm() {
   });
 };
 
-(() => {
-  const userId = route.params && route.params.userId;
-  if (userId) {
-    loading.value = true;
-    getAuthRole(userId).then(response => {
-      form.value = response.user;
-      roles.value = response.roles;
-      total.value = roles.value.length;
-      nextTick(() => {
-        roles.value.forEach(row => {
-          if (row.flag) {
-            proxy.$refs["roleRef"].toggleRowSelection(row);
-          }
-        });
-      });
-      loading.value = false;
-    });
-  }
-})();
+// (() => {
+//   const userId = route.params && route.params.userId;
+//   if (userId) {
+//     loading.value = true;
+//     getAuthRole(userId).then(response => {
+//       form.value = response.user;
+//       roles.value = response.roles;
+//       total.value = roles.value.length;
+//       nextTick(() => {
+//         roles.value.forEach(row => {
+//           if (row.flag) {
+//             proxy.$refs["roleRef"].toggleRowSelection(row);
+//           }
+//         });
+//       });
+//       loading.value = false;
+//     });
+//   }
+// })();
 </script>

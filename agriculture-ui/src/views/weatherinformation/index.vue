@@ -101,15 +101,19 @@ const {
 } = toRefs(weatherStore);
 const { proxy } = getCurrentInstance();
 const currentData = computed(() => {
-  return calcWeatherList(grid.value?.[activeLandId.value]);
+  return calcWeatherList(grid.value);
 });
 const progressIndex = computed(() => {
   return ~~(((radarInfo.value.length - 1) * progress.value) / 100);
 });
 
-function fresh() {
+async function fresh() {
   loading.value = true;
-  Promise.all([weatherStore.getWeatherInfo(), baseMapStore.getMapInfo()])
+  await baseMapStore
+    .getMapInfo()
+    .then(async () => {
+      await weatherStore.getWeatherInfo();
+    })
     .then(() => {
       loading.value = false;
       initActiveLandId();
@@ -147,37 +151,30 @@ function handleLayer(currentIndex) {
 }
 
 function handleTools(type) {
-  this[`handleTool${type}`]?.();
+  eval(`handleTool${type}`)();
 }
 function handleToolfresh() {
   fresh();
 }
 async function handleClickLand(id) {
-  // console.log(id)
   weatherinfoAnimation.value = !weatherinfoAnimation.value;
-  // if (!layerValues.value.includes(2)) {
-  //   layerValues.value.push(2);
-  // }
-  // const weather = await getWeatherGrid({ landId: id });
-  // console.log(weather);
-  activeLandId.value = id;
+  await weatherStore.getLandWeather(id).then(() => {
+    activeLandId.value = id;
+  }); 
 }
 function handleToollocate() {
-  const { map } = map.value;
-  map &&
-    iplocateAndFit(map).catch(() => {
+  map.value.map &&
+    iplocateAndFit(map.value.map).catch(() => {
       proxy.$modal.msgError("定位失败");
     });
 }
 
 function handleToolplus() {
-  const { map } = map.value;
-  map?.zoomIn();
+  map.value.map?.zoomIn();
 }
 
 function handleToolminus() {
-  const { map } = map.value;
-  map?.zoomOut();
+  map.value.map?.zoomOut();
 }
 // onMounted(() => {
 fresh();

@@ -64,14 +64,11 @@
       v-if="refreshTable"
       v-loading="loading"
       :data="deptList"
-      row-key="deptId"
+      row-key="id"
       :default-expand-all="isExpandAll"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
-      <el-table-column
-        prop="name"
-        label="部门名称" 
-      ></el-table-column>
+      <el-table-column prop="name" label="部门名称"></el-table-column>
       <el-table-column
         prop="leader"
         label="负责人"
@@ -83,11 +80,7 @@
           <dict-tag :options="common_status" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column
-        label="创建时间"
-        align="center"
-        prop="createTime"
-      >
+      <el-table-column label="创建时间" align="center" prop="createTime">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
@@ -138,11 +131,11 @@
                 v-model="form.parentId"
                 :data="deptOptions"
                 :props="{
-                  value: 'deptId',
+                  value: 'id',
                   label: 'name',
                   children: 'children',
                 }"
-                value-key="deptId"
+                value-key="id"
                 placeholder="选择上级部门"
                 check-strictly
               />
@@ -164,11 +157,14 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="负责人" prop="leader">
-              <el-input
+              <!-- <el-input
                 v-model="form.leader"
                 placeholder="请输入负责人"
                 maxlength="20"
-              />
+              /> -->
+              <el-select v-model="form.leaderUserId" placeholder="请输入负责人" clearable style="width: 100%">
+                <el-option v-for="item in users" :key="parseInt(item.id)" :label="item.nickname" :value="parseInt(item.id)" />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -220,9 +216,8 @@ import {
   delDept,
   addDept,
   updateDept,
-  listDeptExcludeChild,
 } from "@/api/system/dept";
-import {listSimpleUsers} from "@/api/system/user";
+import { listSimpleUsers } from "@/api/system/user";
 
 const { proxy } = getCurrentInstance();
 const { common_status } = proxy.useDict("common_status");
@@ -235,7 +230,7 @@ const title = ref("");
 const deptOptions = ref([]);
 const isExpandAll = ref(true);
 const refreshTable = ref(true);
-const users =ref([])
+const users = ref([]);
 const data = reactive({
   form: {},
   queryParams: {
@@ -271,7 +266,7 @@ const { queryParams, form, rules } = toRefs(data);
 function getList() {
   loading.value = true;
   listDept(queryParams.value).then((response) => {
-    deptList.value = proxy.handleTree(response.data, "deptId");
+    deptList.value = proxy.handleTree(response.data);
     loading.value = false;
   });
 }
@@ -283,7 +278,7 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {
-    deptId: undefined,
+    id: undefined,
     parentId: undefined,
     name: undefined,
     sort: 0,
@@ -307,10 +302,10 @@ function resetQuery() {
 function handleAdd(row) {
   reset();
   listDept().then((response) => {
-    deptOptions.value = proxy.handleTree(response.data, "deptId");
+    deptOptions.value = proxy.handleTree(response.data);
   });
   if (row != undefined) {
-    form.value.parentId = row.deptId;
+    form.value.parentId = row.id;
   }
   open.value = true;
   title.value = "添加部门";
@@ -338,10 +333,10 @@ function userNicknameFormat(row, column) {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  listDeptExcludeChild(row.deptId).then((response) => {
-    deptOptions.value = proxy.handleTree(response.data, "deptId");
+  listDept().then((response) => {
+    deptOptions.value = proxy.handleTree(response.data);
   });
-  getDept(row.deptId).then((response) => {
+  getDept(row.id).then((response) => {
     form.value = response.data;
     open.value = true;
     title.value = "修改部门";
@@ -351,7 +346,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["deptRef"].validate((valid) => {
     if (valid) {
-      if (form.value.deptId != undefined) {
+      if (form.value.id != undefined) {
         updateDept(form.value).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
@@ -372,7 +367,7 @@ function handleDelete(row) {
   proxy.$modal
     .confirm('是否确认删除名称为"' + row.name + '"的数据项?')
     .then(function () {
-      return delDept(row.deptId);
+      return delDept(row.id);
     })
     .then(() => {
       getList();
@@ -382,9 +377,9 @@ function handleDelete(row) {
 }
 
 onMounted(() => {
-  getList();    // 获得用户列表
-    listSimpleUsers().then(response => {
-      users.value = response.data;
-    });
+  getList(); // 获得用户列表
+  listSimpleUsers().then((response) => {
+    users.value = response.data;
+  });
 });
 </script>

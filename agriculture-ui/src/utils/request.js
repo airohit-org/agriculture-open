@@ -193,6 +193,6 @@ export default service
 export function getBaseHeader() {
   return {
     'Authorization': "Bearer " + getToken(),
-    'tenant-id': getTenantId(),
+    'farm-tenant-id': getTenantId(),
   }
 }

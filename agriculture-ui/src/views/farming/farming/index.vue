@@ -12,14 +12,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="创建日期" prop="createTime">
-        <el-date-picker v-model="queryParams.createTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss"
+        <el-date-picker v-model="queryParams.createTime" value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
-          :default-time="['00:00:00', '23:59:59']" />
+          :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 2, 1, 23, 59, 59)]" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
         <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
-        <!-- <el-button class="add" type="primary" plain :icon="Plus" size="mini" @click="handleAdd"
+        <!-- <el-button class="add" type="primary" plain :icon="Plus" size="small" @click="handleAdd"
           >新增</el-button> -->
       </el-form-item>
     </el-form>
@@ -68,7 +68,7 @@
           </el-select>
         </el-form-item>
         <el-form-item class="form-item" label="开始日期" prop="startTime">
-          <el-date-picker v-model="form.startTime" value-format="yyyy-MM-dd" placeholder="请选择" />
+          <el-date-picker v-model="form.startTime" value-format="YYYY-MM-DD" placeholder="请选择" />
         </el-form-item>
         <el-form-item v-if="!isClone" class="form-item" label="计划周期" prop="planningCycle">
           <el-input-number :min="1" :step="1" clearable v-model.trim="form.planningCycle" placeholder="请输入" />
@@ -164,8 +164,9 @@ function clonePlan(item) {
   form.value.type = 2
 }
 
-function selectCrops() {
+function selectCrops(code) {
   isCrops.value = false
+  form.value.cropsType = null
   optionsCropsType.value = options.value.filter(ele => {
     if (ele.code === code) return ele.cropsVarietiesList
   })[0].cropsVarietiesList
@@ -198,9 +199,9 @@ function cancel() {
 function reset() {
   form.value = {
     id: undefined,
-    type: 2,
+    type: 1,
     isTemplate: 1,
-    // status: 1,
+    status: 0,
   };
   proxy.resetForm("formRef");
 }
@@ -272,9 +273,10 @@ function addPlan() {
     if (!valid) {
       return;
     }
-    form.value.type = 2
+    form.value.type = 1
     form.value.isTemplate = 1
     if (isClone.value) {
+      form.value.type = 2
       form.value.isTemplate = 0
       form.value.status = 1
       cloneTemplate(form.value).then(response => {
@@ -295,9 +297,9 @@ function addPlan() {
         form.value.startTime = parseTime(form.value.startTime)
         router.push({
           name: 'Calendar',
-          params: {
+          query: {
             types: 'query',
-            row: form.value,
+            row: JSON.stringify(form.value),
           }
         })
       });
@@ -310,7 +312,7 @@ function addPlan() {
       proxy.$modal.msgSuccess("新增成功");
       router.push({
         name: 'Calendar',
-        params: {
+        query: {
           types: 'add',
           row: null,
           id: response.data

@@ -20,7 +20,7 @@ const props = defineProps({
     default: () => ({}),
   },
 });
-const echarWeatherTenDayEchartsts = ref()
+const echarWeatherTenDayEchartsts = ref();
 const echartsRef = ref();
 watch(
   () => props.echartsInfo,
@@ -34,9 +34,7 @@ watch(
 );
 function getWeather() {
   !echartsRef.value &&
-    (echartsRef.value = echarts.init(
-      echarWeatherTenDayEchartsts.value
-    ));
+    (echartsRef.value = echarts.init(echarWeatherTenDayEchartsts.value));
 }
 function setOptions() {
   getWeather();
@@ -125,15 +123,15 @@ function setOptions() {
         symbolSize: 6,
         data: maximumTemperature,
         itemStyle: {
-          normal: {
-            color: "#200202",
-            borderColor: "#FCF366",
-            borderWidth: 1,
-            lineStyle: {
-              color: "#FCF366",
-            },
+          color: "#200202",
+          borderColor: "#FCF366",
+          borderWidth: 1,
+          lineStyle: {
+            color: "#FCF366",
           },
-          emphasis: {
+        },
+        emphasis: {
+          itemStyle: {
             color: "#FCF366",
             borderColor: "#FCF366",
             borderWidth: 2,
@@ -160,15 +158,15 @@ function setOptions() {
         symbol: "circle",
         symbolSize: 6,
         itemStyle: {
-          normal: {
-            color: "#200202",
-            borderColor: "#00E4F7",
-            borderWidth: 1,
-            lineStyle: {
-              color: "#00E4F7",
-            },
+          color: "#200202",
+          borderColor: "#00E4F7",
+          borderWidth: 1,
+          lineStyle: {
+            color: "#00E4F7",
           },
-          emphasis: {
+        },
+        emphasis: {
+          itemStyle: {
             color: "#00E4F7",
             borderColor: "#00E4F7",
             borderWidth: 2,

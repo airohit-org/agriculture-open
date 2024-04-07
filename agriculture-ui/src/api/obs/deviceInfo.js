@@ -55,7 +55,7 @@ export function deleteDevice(id) {
 // 获得设备实时数据
 export function getRealTimeData(query) {
   return request({
-    url: '/device/obs/getRealTimeData',
+    url: '/device/info/getRealTimeData',
     method: 'get',
     params: query
   })

@@ -518,7 +518,7 @@ function reset() {
 /** 添加角色 */
 function handleAdd() {
   reset();
-  getMenuTreeselect();
+  // getMenuTreeselect();
   open.value = true;
   title.value = "添加角色";
 }

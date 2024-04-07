@@ -14,7 +14,6 @@
           @draw="draw"
           @disDraw="disDraw"
         />
-        <div style="width: 40px; height: 40px;">占位</div>
       </template>
       <template #top-1>
         <LayerSelect :list="showStatuslist" v-model="status" />
@@ -76,14 +75,14 @@
           @mouseenter="hover = true"
           @mouseleave="hover = false"
         >
-          <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+          <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
             <el-form-item label="地块名称" prop="landName">
               <el-input v-model="form.landName" placeholder="请输入地块名称" />
             </el-form-item>
             <el-form-item label="种植面积(亩)" prop="area">
               <el-input-number
                 :step="0.01"
-                v-model="form.area"
+                v-model.number="form.area"
                 placeholder="请输入种植面积"
               />
             </el-form-item>
@@ -109,7 +108,7 @@
                       >
                         <div class="crop-select">
                           <el-select
-                            :value="form.cropsCreateReqVOList[index].crops"
+                            v-model="form.cropsCreateReqVOList[index].crops"
                             @change="
                               (val) => {
                                 form.cropsCreateReqVOList[index].crops = val;
@@ -347,7 +346,7 @@ const data = reactive({
   wholeLoading: true,
   loading: false,
   topBtnShow: TOP_BTN_SHOW_ENUM.NO_DRAWING,
-  form: {},
+  form: {landName: ''},
   editPrev: [],
   editAfter: [],
   statusMapLayerGroup: {},
@@ -1024,7 +1023,7 @@ function deleteArea() {
   });
 }
 function submitForm() {
-  proxy.$refs.form.validate((valid) => {
+  proxy.$refs.formRef.validate((valid) => {
     if (!valid) {
       return;
     }

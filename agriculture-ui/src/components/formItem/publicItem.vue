@@ -458,9 +458,7 @@
       <div class="footer" v-if="!selectConfig.disabled">
         <!-- <div> -->
         <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="submitForm(selectConfig)"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="submitForm(config)">确 定</el-button>
       </div>
       <div class="footer" v-else>
         <el-button @click="cancel">取 消</el-button>
@@ -530,6 +528,7 @@ let agroTask = [
 ];
 import { createTask, updateTaskDetail } from "@/api/agro/taskTemplateInfo";
 import { getTaskFiled } from "@/api/agro/taskTemplateInfo.js";
+import { computed, ref, watch, unref } from "vue";
 const props = defineProps({
   selectConfig: {
     type: Object,
@@ -539,7 +538,7 @@ const props = defineProps({
 
 const emit = defineEmits(["cancel", "getList"]);
 const { proxy } = getCurrentInstance();
-const form = ref(props.selectConfig.form);
+const form = ref({});
 const rules = {
   agroName: [
     { required: true, message: "请输入任务名称", trigger: "blur" },
@@ -680,14 +679,14 @@ function cancel() {
   form.value = {};
   // formRef.value.resetFields();
 }
-function submitForm(form) {
+function submitForm() {
   formRef.value.validate((valid) => {
     if (!valid) {
       return;
     }
-    if (selectConfig.value.edit) {
+    if (props.selectConfig.edit) {
       const param1 = {
-        type: selectConfig.value.type,
+        type: props.selectConfig.type,
       };
       let type = agroTask.filter((ele) => ele.typeTableName === param1.type);
       form.value.type = parseInt(type[0].type);
@@ -698,7 +697,7 @@ function submitForm(form) {
         createTime,
         planningStage,
         ...formRest
-      } = form;
+      } = form.value;
       updateTaskDetail(formRest).then((response) => {
         proxy.$modal.msgSuccess("修改成功");
         emit("cancel", true);
@@ -708,14 +707,13 @@ function submitForm(form) {
       return;
     }
     const param = {
-      planningStage: selectConfig.value.stageCode,
-      plantingPlanId: selectConfig.value.plantingPlanId,
-      type: selectConfig.value.type,
+      planningStage: props.selectConfig.stageCode,
+      plantingPlanId: props.selectConfig.plantingPlanId,
+      type: props.selectConfig.type,
     };
     let type = agroTask.filter((ele) => ele.typeTableName === param.type);
     param.type = parseInt(type[0].type);
     let params = { ...param, ...form.value };
-    console.log(params);
     createTask(params).then((response) => {
       proxy.$modal.msgSuccess("新增成功");
       formRef.value.resetFields();
@@ -728,6 +726,14 @@ function submitForm(form) {
 onMounted(() => {
   proxy.$forceUpdate();
 });
+
+watch(
+  () => props.selectConfig,
+  () => {
+    form.value = props.selectConfig.form;
+  },
+  { deep: true, immediate: true }
+);
 </script>
 
 <style scoped lang="scss">

@@ -77,7 +77,7 @@
 
 <script setup>
 import { ElMessageBox } from "element-plus";
-import { getCodeImg, register } from "@/api/login";
+import { getCodeImg } from "@/api/login";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();

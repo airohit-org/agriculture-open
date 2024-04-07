@@ -79,7 +79,6 @@
             class="layout-font"
             type="primary"
             icon="Plus"
-            size="defalut"
             @click="handleAdd"
             v-hasPermi="['plant:taskInfo:create']"
             >新增</el-button
@@ -90,7 +89,6 @@
             type="primary"
             class="bgcolor layout-font"
             plain
-            size="defalut"
             @click="handleAppoint"
             v-hasPermi="['plant:task:appoint']"
             >批量指派</el-button
@@ -152,7 +150,6 @@
                 scope.row.taskStatus == '未指派' ||
                 scope.row.taskStatus == '未开始'
               "
-              size="small"
               type="primary"
               link
               icon="Thumb"
@@ -161,7 +158,6 @@
               >指派</el-button
             >
             <el-button
-              size="small"
               type="primary"
               link
               icon="Search"
@@ -170,7 +166,6 @@
               >查看</el-button
             >
             <el-button
-              size="small"
               type="primary"
               link
               icon="Edit"
@@ -179,7 +174,6 @@
               >修改</el-button
             >
             <el-button
-              size="small"
               type="primary"
               link
               icon="Delete"
@@ -417,8 +411,8 @@ const queryParams = ref({
 const isShowPlant = ref(false);
 const taskAppointVO = ref({});
 const plantName = ref({
-  planName: null,
-  plantingPlanId: null,
+  planName: undefined,
+  plantingPlanId: undefined,
 });
 const titleChange = ref(true);
 const titleChangeSon = ref(true);
@@ -613,7 +607,7 @@ function reset() {
     status: undefined,
     nickName: undefined,
   };
-  proxy.resetForm("form");
+  proxy.resetForm("formRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -687,7 +681,7 @@ function handleUpdate(row) {
     }
     open.value = true;
     selectConfig.value.edit = true;
-    selectConfig.value.form = form;
+    selectConfig.value.form = form.value;
     selectConfig.value.disabled = false;
     title.value = "修改农事任务基本信息";
   });

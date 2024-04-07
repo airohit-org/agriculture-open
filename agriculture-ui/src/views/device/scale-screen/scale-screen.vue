@@ -1,7 +1,7 @@
 <!--
  * @Author: wei
  * @description: 大屏自适应容器组件
- * @LastEditTime: 2024-03-25 13:44:21
+ * @LastEditTime: 2024-04-01 08:58:29
 -->
 <template>
   <!-- <section class="screen-box" :style="boxStyle"> -->
@@ -172,7 +172,7 @@ function updateScale() {
 function initMutationObserver() {
   const screenWrapper = screenWrapper.value;
   const observer = (observer.value = new MutationObserver(() => {
-    onResize();
+    onResize.value();
   }));
 
   observer.observe(screenWrapper, {
@@ -204,7 +204,7 @@ async function resize() {
 }
 
 onMounted(() => {
-  onResize = debounce(() => {
+  onResize.value = debounce(() => {
     resize();
   }, delay.value);
   $nextTick(() => {

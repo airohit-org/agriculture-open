@@ -7,7 +7,7 @@
           :key="id"
           class="layer"
           :class="layerValues.includes(id) ? 'layer-active' : ''"
-          @click="$emit('handleLayer', id)"
+          @click="emit('handleLayer', id)"
         >
           <img :src="layerValues.includes(id) ? activeIcon : icon" alt="" />
           <span>{{ title }}</span>
@@ -17,7 +17,7 @@
         v-for="{ icon, type } in list"
         :key="type"
         :src="icon"
-        @click="$emit('clickTool', type)"
+        @click="emit('clickTool', type)"
       />
     </div>
     <div class="bottom">
@@ -41,7 +41,7 @@ const props = defineProps({
   layerValues: Array,
   values: Array,
 });
-
+const emit = defineEmits(["handleLayer", "clickTool"]);
 const configList = CONFIG;
 const layerList = LAYER_LIST;
 const list = [

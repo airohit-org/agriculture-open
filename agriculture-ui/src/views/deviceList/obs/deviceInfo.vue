@@ -44,17 +44,16 @@
           <el-option label="报警" value="alarm"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item label="创建时间">
         <el-date-picker
-          v-model="queryParams.createTime"
-          style="width: 240px"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          v-model="dateRange"
           type="daterange"
-          range-separator="-"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          :default-time="defaultTime"
+          range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          :default-time="['00:00:00', '23:59:59']"
-        />
+        ></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery"
@@ -539,6 +538,10 @@ const firmName = ref("");
 const isCreate = ref(false);
 const firmList = ref([]);
 const landList = ref([]);
+const defaultTime = ref([
+  new Date(2000, 1, 1, 0, 0, 0),
+  new Date(2000, 2, 1, 23, 59, 59),
+]);
 // 遮罩层
 const loading = ref(true);
 // 导出遮罩层
@@ -597,16 +600,8 @@ const queryParams = ref({
   deviceType: null,
   status: null,
   firmName: null,
-  createTime: [],
 });
-const queryFormParams = ref({
-  pageNo: 1,
-  pageSize: 100,
-  deviceName: null,
-  farmName: null,
-  deviceType: null,
-  createTime: [],
-});
+const dateRange = ref([]);
 const mapIconShow = ref({
   show: false,
   pos: null,
@@ -663,7 +658,6 @@ function filterDeviceType(arr) {
   for (const key in resultMap) {
     resultArr.push({ label: key, value: resultMap[key] });
   }
-  console.log(resultArr);
   return resultArr;
 }
 /**
@@ -684,7 +678,7 @@ function getFarmInfo() {
   const tenantId = getTenantId();
   if (!tenantId) {
     proxy.$modal.confirm("请重新登录", "提示").then(() => {
-      $store.dispatch("LogOut").then(() => {
+      proxy.$store.dispatch("LogOut").then(() => {
         location.href = getPath("/index");
       });
     });
@@ -798,9 +792,12 @@ function handleDatas() {
 function getList() {
   loading.value = true;
   oldId.value = "";
+  const params = {
+    ...queryParams.value,
+    createTime: dateRange.value,
+  };
   // 执行查询
-  getDeviceInfoPage(queryParams.value).then((response) => {
-    console.log(response);
+  getDeviceInfoPage(params).then((response) => {
     list.value = response.data.list;
     total.value = response.data.total;
     loading.value = false;
@@ -881,7 +878,7 @@ function nextStep() {
       return;
     }
     if (form.value.firmId && showJuYing.value) {
-      const loading = $loading({
+      const loading = proxy.$loading({
         lock: true,
         text: "Loading",
         spinner: "el-icon-loading",
@@ -917,6 +914,8 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryForm");
+  dateRange.value = [];
+  handleQuery();
   handleQuery();
 }
 /** 新增按钮操作 */
@@ -975,7 +974,7 @@ function submitUpdateForm() {
       return;
     }
     updateDevice(form.value).then((response) => {
-      poxy.$modal.msgSuccess("修改成功");
+      proxy.$modal.msgSuccess("修改成功");
       isUpdate.value = false;
       getList();
     });

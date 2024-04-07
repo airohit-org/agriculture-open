@@ -1,22 +1,24 @@
 <template>
   <el-card shadow="hover" class="card" @click="goCal(props.planInfo)">
-    <div slot="header" class="fix">
-      <div class="clearfix">
-        <div class="spanId">
-          <div class="spanImg">
-            <div class="id">
-              {{ props.index }}
+    <template #header>
+      <div class="fix">
+        <div class="clearfix">
+          <div class="spanId">
+            <div class="spanImg">
+              <div class="id">
+                {{ props.index }}
+              </div>
             </div>
+            <div class="planName">{{ props.planInfo.planName }}</div>
           </div>
-          <div class="planName">{{ props.planInfo.planName }}</div>
+          <div class="spanStatus col">
+            <img v-if="props.planInfo.status === 0" class="img" src="../../../../assets/images/planting-plan/nopublish-img@2x.png">
+            <img v-else class="img" src="../../../../assets/images/planting-plan/publish-img@2x.png">
+          </div>
         </div>
-        <div class="spanStatus col">
-          <img v-if="props.planInfo.status === 0" class="img" src="../../../../assets/images/planting-plan/nopublish-img@2x.png">
-          <img v-else class="img" src="../../../../assets/images/planting-plan/publish-img@2x.png">
-        </div>
+        <img v-if="!props.isTemplate" class="close" src="../../../../assets/images/planting-plan/Close@2x.png" @click.prevent.stop="handleDelete(props.planInfo)">
       </div>
-      <img v-if="!props.isTemplate" class="close" src="../../../../assets/images/planting-plan/Close@2x.png" @click.prevent.stop="handleDelete(props.planInfo)">
-    </div>
+    </template>
     <img class="set" src="../../../../assets/images/planting-plan/iset@2x.png" @click.prevent.stop="handleUpdate(props.planInfo)">
     <div class="cardItem" @click="goCal(props.planInfo)">
       <div class="item">

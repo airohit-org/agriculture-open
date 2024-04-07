@@ -60,13 +60,25 @@
         class-name="small-padding fixed-width"
       >
         <template v-slot="scope">
-          <el-button  link type="primary"  icon="Search" @click="handleInit(scope.row)"
+          <el-button
+            link
+            type="primary"
+            icon="Search"
+            @click="handleInit(scope.row)"
             >获取设备</el-button
           >
-          <el-button  link type="primary"  icon="Edit" @click="handleUpdate(scope.row)"
+          <el-button
+            link
+            type="primary"
+            icon="Edit"
+            @click="handleUpdate(scope.row)"
             >修改</el-button
           >
-          <el-button  link type="primary"  icon="Delete" @click="handleDelete(scope.row)"
+          <el-button
+            link
+            type="primary"
+            icon="Delete"
+            @click="handleDelete(scope.row)"
             >删除</el-button
           >
         </template>
@@ -234,7 +246,7 @@ async function FirmListGet() {
 function getList() {
   loading.value = true;
   // 执行查询
-  getDeviceFirmPage(queryParams).then((response) => {
+  getDeviceFirmPage(queryParams.value).then((response) => {
     list.value = response.data.list;
     total.value = response.data.total;
     loading.value = false;
@@ -314,18 +326,18 @@ function handleUpdate(row) {
       DeviceFirmget(id);
     });
 
-  getDeviceFirm(id).then(response => {
+  getDeviceFirm(id).then((response) => {
     form.value = response.data;
     open.value = true;
     title.value = "修改设备厂商信息";
   });
 }
-// async function DeviceFirmget(id) {
-//   let res = await getDeviceFirm(id);
-//   form.value = res.data;
-//   open.value = true;
-//   title.value = "修改设备厂商信息";
-// }
+async function DeviceFirmget(id) {
+  let res = await getDeviceFirm(id);
+  form.value = res.data;
+  open.value = true;
+  title.value = "修改设备厂商信息";
+}
 /** 提交按钮 */
 function submitForm() {
   formRef.value.validate((valid) => {
@@ -338,8 +350,7 @@ function submitForm() {
         form.value.firmId != firmIds.value &&
         form.value.firmId != BJfirmIds.value
       ) {
-        const { firmName, loginName, loginPwd, ...params } = form;
-        console.log("params", params);
+        const { firmName, loginName, loginPwd, ...params } = form.value;
         updateDeviceFirm(params).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
@@ -347,7 +358,7 @@ function submitForm() {
         });
         return;
       } else {
-        updateDeviceFirm(form).then((response) => {
+        updateDeviceFirm(form.value).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();

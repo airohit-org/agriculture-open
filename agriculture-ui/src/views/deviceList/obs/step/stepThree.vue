@@ -61,7 +61,7 @@ function submitForm() {
 }
 
 onMounted(() => {
-  forms.value.phoneNum = phoneNum.value || "";
+  forms.value.phoneNum = props.phoneNum || "";
 });
 </script>
 

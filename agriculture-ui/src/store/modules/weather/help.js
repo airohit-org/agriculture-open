@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 dayjs.extend(customParseFormat);
 
 export const formatRainFallInfo = (list = []) => list.map(({ rain }) => rain);
-export const formatTimeDateInfo = (list = []) => list.map(({ time }) => time);
+export const formatTimeDateInfo = (list = []) => list.map(({ dataTime }) => dayjsFormatTime(new Date(dataTime), "HH:mm"));
 export const formatMsgList = (list = []) => list.map(({ msg }) => msg);
 
 export const formatWeather24 = (list = []) =>

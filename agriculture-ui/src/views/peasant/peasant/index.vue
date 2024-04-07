@@ -50,7 +50,7 @@
           >新增</el-button
         >
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button
           class="layout-font"
           type="warning"
@@ -73,7 +73,7 @@
           :loading="exportLoading"
           >模板</el-button
         >
-      </el-col>
+      </el-col> -->
       <right-toolbar
         :showSearch.sync="showSearch"
         @queryTable="getList"
@@ -226,6 +226,8 @@
         :before-upload="beforeUpload"
         :action="upload.url + '?updateSupport=' + upload.updateSupport"
         :disabled="upload.isUploading"
+        :on-change="handleFileChange"
+        :on-remove="handleFileRemove"
         :on-progress="handleFileUploadProgress"
         :on-error="handleFileError"
         :on-success="handleFileSuccess"
@@ -296,6 +298,7 @@ const queryParams = ref({
 });
 const formRef = ref();
 const uploadRef = ref();
+const uploadFiles = ref(0);
 // 表单参数
 const form = ref({});
 // 表单校验
@@ -380,7 +383,7 @@ const selectCity = (val) => {
   });
 };
 const selectArea = (val) => {
-  [options, optionsCity.value, optionsArea.value].forEach((options) => {
+  [options.value, optionsCity.value, optionsArea.value].forEach((options) => {
     ["province", "city", "area"].forEach((key) => {
       const item = options.find((item) => item.code === form.value[key]);
       if (item) {
@@ -393,7 +396,7 @@ const selectArea = (val) => {
 const getList = () => {
   loading.value = true;
   // 执行查询
-  getPage(queryParams).then((response) => {
+  getPage(queryParams.value).then((response) => {
     list.value = response.data.list;
     total.value = response.data.total;
     loading.value = false;
@@ -448,8 +451,8 @@ const handleUpdate = (row) => {
   const id = row.id;
   get(id).then((response) => {
     form.value = response.data;
-    if (decrypt(form.passWord) !== null) {
-      form.value.passWord = decrypt(form.passWord);
+    if (decrypt(form.value.passWord) !== null) {
+      form.value.passWord = decrypt(form.value.passWord);
     }
     open.value = true;
     title.value = "修改农户";
@@ -465,9 +468,9 @@ const submitForm = () => {
     // 修改的提交
     let params = {};
     params = form.value;
-    params.passWord = encrypt(form.passWord);
+    params.passWord = encrypt(form.value.passWord);
     console.log(params);
-    if (form.id != null) {
+    if (form.value.id != null) {
       update(params).then((response) => {
         proxy.$modal.msgSuccess("修改成功");
         open.value = false;
@@ -539,6 +542,14 @@ const handleFileUploadProgress = (event, file, fileList) => {
   // }
   upload.value.isUploading = true;
 };
+// 上传文件变更
+const handleFileChange = (file, fileList) => {
+  uploadFiles.value = fileList.length;
+};
+// 上传文件移除
+const handleFileRemove = (file, fileList) => {
+  uploadFiles.value = fileList.length;
+};
 // 文件上传成功处理
 const handleFileSuccess = (response, file, fileList) => {
   if (response.code !== 0) {
@@ -547,7 +558,7 @@ const handleFileSuccess = (response, file, fileList) => {
   }
   upload.value.open = false;
   upload.value.isUploading = false;
-  uploadRef.clearFiles();
+  uploadRef.value.clearFiles();
   getList();
 };
 const handleFileError = (err, file, fileList) => {
@@ -555,7 +566,8 @@ const handleFileError = (err, file, fileList) => {
 };
 // 提交上传文件
 const submitFileForm = () => {
-  if ($refs.upload._data.uploadFiles.length === 0) {
+  console.log(uploadFiles.value);
+  if (uploadFiles.value.length === 0) {
     proxy.$message.error("请上传xls、xlsx格式文件!");
     return;
   }

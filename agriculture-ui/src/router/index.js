@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createWebHistory, createWebHashHistory, createRouter } from 'vue-router'
 /* Layout */
 import Layout from '@/layout'
 
@@ -83,18 +83,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // {
-  //   path: '/planting',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [{
-  //     path: 'plantinginformation',
-  //     component: () => import('@/views/farming/farming/index2'),
-  //     name: 'Calendar',
-  //     meta: { title: '种植计划-日历' }
-  //   }
-  //   ]
-  // },
   {
     path: '/deviceDataInfo',
     component: Layout,
@@ -118,78 +106,6 @@ export const constantRoutes = [
       meta: { title: '种植计划-日历' }
     }]
   },
-  // {
-  //   path: '/deviceDataInfo',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [{
-  //     path: 'deviceDataInfo',
-  //     component: () => import('@/views/deviceList/obs/deviceDataInfo'),
-  //     name: 'deviceDataInfo',
-  //     meta: { title: '设备数据' }
-  //   }
-  //   ]
-  // },
-  // {
-  //   path: '/deviceImgList',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [{
-  //     path: 'deviceImgList',
-  //     component: () => import('@/views/deviceList/obs/deviceImgList'),
-  //     name: 'deviceImgList',
-  //     meta: { title: '设备图片' }
-  //   }
-  //   ]
-  // },
-  // {
-  //   path: '/deviceInfoImg',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [{
-  //     path: 'deviceInfoImg',
-  //     component: () => import('@/views/deviceList/obs/deviceInfoImg'),
-  //     name: 'deviceInfoImg',
-  //     meta: { title: '设备数据' }
-  //   }
-  //   ]
-  // },
-  // {
-  //   path: '/chat',
-  //   component: Layout,
-  //   // hidden:true,
-  //   children: [{
-  //     path: 'chat',
-  //     component: () => import('@/views/chat/index'),
-  //     name: 'chat',
-  //     meta: { title: '伴飞小智', icon: 'chat', affix: false }
-  //   }
-  //   ]
-  // },
-  // {
-  //   path: '/facilityAgriculture',
-  //   component: Layout,
-  //   // hidden:true,
-  //   children: [{
-  //     path: 'facilityAgriculture',
-  //     component: () => import('@/views/facilityAgriculture/index'),
-  //     name: 'facilityAgriculture',
-  //     meta: { title: '设施农业', icon: 'facilityAgriculture', affix: false }
-  //   }
-  //   ]
-  // },
-  // {
-  //   path: '/imgpool',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [{
-  //     path: 'index',
-  //     component: () => import('@/views/imgPool/index'),
-  //     name: 'imgpool',
-  //     meta: { title: '图床' }
-  //   }
-  //   ]
-  // },
   {
     path: '/user',
     component: Layout,
@@ -203,41 +119,6 @@ export const constantRoutes = [
     }
     ]
   }, 
-  // {
-  //   path: '/dict',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [{
-  //     path: 'type/data/:dictId(\\d+)',
-  //     component: () => import('@/views/system/dict/data'),
-  //     name: 'Data',
-  //     meta: { title: '字典数据', icon: '', activeMenu: '/system/dict' }
-  //   }
-  //   ]
-  // }, {
-  //   path: '/job',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [{
-  //     path: 'log',
-  //     component: () => import('@/views/infra/job/log'),
-  //     name: 'JobLog',
-  //     meta: { title: '调度日志', activeMenu: '/infra/job' }
-  //   }
-  //   ]
-  // }, {
-  //   path: '/codegen',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [{
-  //     path: 'edit/:tableId(\\d+)',
-  //     component: () => import('@/views/infra/codegen/editTable'),
-  //     name: 'GenEdit',
-  //     meta: { title: '修改生成配置', activeMenu: '/infra/codegen' }
-  //   }
-  //   ]
-  // }
-
 ]
 
 // 动态路由，基于用户权限动态去加载
@@ -270,52 +151,52 @@ export const dynamicRoutes = [
       }
     ]
   },
-  {
-    path: '/system/dict-data',
-    component: Layout,
-    hidden: true,
-    permissions: ['system:dict:list'],
-    children: [
-      {
-        path: 'index/:dictId(\\d+)',
-        component: () => import('@/views/system/dict/data'),
-        name: 'Data',
-        meta: { title: '字典数据', activeMenu: '/system/dict' }
-      }
-    ]
-  },
-  {
-    path: '/monitor/job-log',
-    component: Layout,
-    hidden: true,
-    permissions: ['monitor:job:list'],
-    children: [
-      {
-        path: 'index/:jobId(\\d+)',
-        component: () => import('@/views/monitor/job/log'),
-        name: 'JobLog',
-        meta: { title: '调度日志', activeMenu: '/monitor/job' }
-      }
-    ]
-  },
-  {
-    path: '/tool/gen-edit',
-    component: Layout,
-    hidden: true,
-    permissions: ['tool:gen:edit'],
-    children: [
-      {
-        path: 'index/:tableId(\\d+)',
-        component: () => import('@/views/tool/gen/editTable'),
-        name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
-      }
-    ]
-  }
+  // {
+  //   path: '/system/dict-data',
+  //   component: Layout,
+  //   hidden: true,
+  //   permissions: ['system:dict:list'],
+  //   children: [
+  //     {
+  //       path: 'index/:dictId(\\d+)',
+  //       component: () => import('@/views/system/dict/data'),
+  //       name: 'Data',
+  //       meta: { title: '字典数据', activeMenu: '/system/dict' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/monitor/job-log',
+  //   component: Layout,
+  //   hidden: true,
+  //   permissions: ['monitor:job:list'],
+  //   children: [
+  //     {
+  //       path: 'index/:jobId(\\d+)',
+  //       component: () => import('@/views/monitor/job/log'),
+  //       name: 'JobLog',
+  //       meta: { title: '调度日志', activeMenu: '/monitor/job' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/tool/gen-edit',
+  //   component: Layout,
+  //   hidden: true,
+  //   permissions: ['tool:gen:edit'],
+  //   children: [
+  //     {
+  //       path: 'index/:tableId(\\d+)',
+  //       component: () => import('@/views/tool/gen/editTable'),
+  //       name: 'GenEdit',
+  //       meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
+  //     }
+  //   ]
+  // }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: constantRoutes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

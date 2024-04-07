@@ -53,6 +53,7 @@ const layerValuesMiddle = computed(() => {
 });
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["clickLand"]);
+defineExpose({ map });
 watch(
   () => props.farm,
   () => {
@@ -163,7 +164,7 @@ function handleLayers({ more, less }) {
     [LAYERS.NET.id]: {
       handleAdd: handleAddNet,
       handleRemove: handleRemoveNet,
-    }
+    },
   };
   more.forEach((id) => match[id].handleRemove());
   less.forEach((id) => match[id].handleAdd());

@@ -12,9 +12,15 @@
         </el-select>
       </el-form-item>
       <el-form-item label="创建日期" prop="createTime">
-        <el-date-picker v-model="queryParams.createTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss"
-          type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
-          :default-time="['00:00:00', '23:59:59']" />
+        <el-date-picker 
+          v-model="queryParams.createTime" 
+          style="width: 240px" 
+          value-format="YYYY-MM-DD HH:mm:ss"
+          type="daterange"
+          range-separator="-" 
+          start-placeholder="开始日期" 
+          end-placeholder="结束日期"
+          :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 2, 1, 23, 59, 59)]" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
@@ -30,7 +36,7 @@
         <PlantingPlanCard 
           :index="(queryParams.pageNo - 1) * queryParams.pageSize + index + 1" 
           :plan-info="item"
-          @clone-plan="clonePlan"
+          @clone-plan="handleClonePlan"
           @update-plan="handleUpdate"
           @delete-plan="handleDelete"
           @is-publish="isPublish"
@@ -67,7 +73,7 @@
           </el-select>
         </el-form-item>
         <el-form-item class="form-item" label="开始日期" prop="startTime">
-          <el-date-picker v-model="form.startTime" value-format="yyyy-MM-dd" placeholder="请选择" />
+          <el-date-picker v-model="form.startTime" format="YYYY/MM/DD" value-format="YYYY-MM-DD" placeholder="请选择" />
         </el-form-item>
         <el-form-item v-if="!isClone" class="form-item" label="计划周期" prop="planningCycle">
           <el-input-number :min="1" :step="1" clearable v-model.trim="form.planningCycle" placeholder="请输入" />
@@ -86,7 +92,8 @@
 <script setup>
 import PlantingPlanCard from './components/PlantingPlanCard.vue';
 import { Search, Refresh, Plus } from '@element-plus/icons-vue';
-import { createPlan, updatePlan, deletePlan, getPlan, getPlanPage, cloneTemplate, planPublish } from "@/api/plant/plan";
+// import { createPlan, updatePlan, deletePlan, getPlan, getPlanPage, cloneTemplate, planPublish } from "@/api/plant/plan";
+import { createPlan, updatePlan, deletePlan, getPlan, getPlanPage, clonePlan, planPublish } from "@/api/plant/plan";
 import { queryRaiseCrops } from "@/api/land/map"
 import { parseTime } from '@/utils/ruoyi'
 import { useRouter } from 'vue-router'
@@ -153,17 +160,18 @@ const data = reactive({
 
 const { queryParams, list, total, showSearch, title, plan, form, rules, options, optionsCropsType, loading, exportLoading, isClone, isCrops } = toRefs(data)
 
-function clonePlan(item) {
+function handleClonePlan(item) {
   reset()
   isClone.value = true
   title.value = "克隆计划";
   plan.value = true
   form.value.plantingPlanId = item.id
-  form.value.type = 2
+  // form.value.type = 2
 }
 
-function selectCrops() {
+function selectCrops(code) {
   isCrops.value = false
+  form.value.cropsType = null
   optionsCropsType.value = options.value.filter(ele => {
     if (ele.code === code) return ele.cropsVarietiesList
   })[0].cropsVarietiesList
@@ -197,7 +205,7 @@ function reset() {
   form.value = {
     id: undefined,
     type: 2,
-    isTemplate: 1,
+    isTemplate: 0,
     // status: 1,
   };
   proxy.resetForm("formRef");
@@ -233,7 +241,6 @@ function getCropName() {
     cropsTypeName: cropsVarietiesName[0].code,
   }
 }
-
 /** 修改按钮操作 */
 function handleUpdate(row) {
   isClone.value = false;
@@ -245,7 +252,7 @@ function handleUpdate(row) {
     let { crops, cropsTypeName } = getCropName()
     form.value.crops = crops
     form.value.cropsType = cropsTypeName
-    title.value = "修改计划模板";
+    title.value = "修改计划";
     plan.value = true;
   })
 }
@@ -271,19 +278,16 @@ function addPlan() {
       return;
     }
     form.value.type = 2
-    form.value.isTemplate = 1
+    form.value.isTemplate = 0
     if (isClone.value) {
-      form.value.isTemplate = 0
-      form.value.status = 1
-      cloneTemplate(form.value).then(response => {
+      clonePlan(form.value).then(response => {
         proxy.$modal.msgSuccess("新增成功");
         plan.value = false;
         isClone.value = false
-        router.push('/planting/farming')
+        getList()
       });
       return
     }
-    // form.value.status = 0
     // 修改的提交
     if (form.value.id != null) {
       form.value.startTime = +(new Date(form.value.startTime))
@@ -293,9 +297,9 @@ function addPlan() {
         form.value.startTime = parseTime(form.value.startTime)
         router.push({
           name: 'Calendar',
-          params: {
+          query: {
             types: 'query',
-            row: form.value,
+            row: JSON.stringify(form.value),
           }
         })
       });
@@ -308,7 +312,7 @@ function addPlan() {
       proxy.$modal.msgSuccess("新增成功");
       router.push({
         name: 'Calendar',
-        params: {
+        query: {
           types: 'add',
           row: null,
           id: response.data

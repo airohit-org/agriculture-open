@@ -9,9 +9,9 @@ export default defineConfig(({ mode, command }) => {
   return {
     // 部署生产环境和开发环境下的URL。
     // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
-    base: VITE_APP_ENV === 'production' ? '/' : '/',
+    base: VITE_APP_ENV === 'production' ? '/agriculture-open-ui' : '/',
     plugins: createVitePlugins(env, command === 'build'),
-    resolve: {
+    resolve: { 
       // https://cn.vitejs.dev/config/#resolve-alias
       alias: {
         // 设置路径

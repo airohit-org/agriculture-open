@@ -44,13 +44,12 @@ export function getDeviceLandListVoList(query) {
 }
 
 
-    // 查找设备分组统计数据
-    export function getDeviceGroupVoList(query) {
-      return request({
-        url: '/device/info/getDeviceGroupVoList',
-        method: 'get',
-        params: query
-      })
-    }
+// 查找设备分组统计数据
+export function getDeviceGroupVoList(query) {
+  return request({
+    url: '/device/info/getDeviceGroupVoList',
+    method: 'get',
+    params: query
+  })
+}
 
-    

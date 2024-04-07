@@ -252,7 +252,7 @@ const reset = () => {
     status: 0,
     remark: undefined,
   };
-  proxy.resetForm("form");
+  proxy.resetForm("formRef");
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {

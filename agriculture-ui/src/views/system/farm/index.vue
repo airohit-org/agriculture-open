@@ -57,7 +57,8 @@
           <el-button
             class="button-seat"
             size="small"
-             link type="primary" 
+            link
+            type="primary"
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['farm::update']"
@@ -152,6 +153,7 @@ import {
   get,
   exportExcel,
   getFarmByTenant,
+  getFarmInfos,
 } from "@/api/farm/farm.js";
 import {
   getProvinceList,
@@ -197,7 +199,7 @@ const IsCity = ref(true);
 const IsArea = ref(true);
 const isShow = ref(false);
 const formRef = ref();
-const taskCount = [
+const taskCount = ref([
   {
     value: 10,
     name: "地块总数",
@@ -228,7 +230,7 @@ const taskCount = [
     bg: new URL("@/assets/images/farmManage/workerTotal.png", import.meta.url)
       .href,
   },
-];
+]);
 // 表单校验
 const rules = {
   farmName: [
@@ -314,6 +316,14 @@ const getList = () => {
     loading.value = false;
   });
 };
+const getFarmStatics = () => {
+  getFarmInfos().then((response) => {
+    taskCount.value.map((item,index)=>{
+      return item.value = response.data[index]
+    })
+  });
+};
+
 /** 取消按钮 */
 const cancel = () => {
   open.value = false;
@@ -338,7 +348,7 @@ const reset = () => {
     area: undefined,
   };
 
-  proxy.resetForm("form");
+  proxy.resetForm("formRef");
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {
@@ -461,6 +471,7 @@ const handleExport = () => {
 };
 
 getList();
+getFarmStatics()
 //  省级 城市
 getProvinceList().then((response) => {
   options.value = null;

@@ -194,17 +194,17 @@ watch(status, () => {
   clearLayers();
   centerFarm();
   setStatusStore(status.value);
-  if (getTenantId() != 166) {
+  // if (getTenantId() != 166) {
     // clearLayers();
     const layerGroup = statusMapLayerGroup.value[0];
     areaLayerList(layerGroup);
     framLayerAdd(layerGroup);
     createDeviceIconLayer(layerGroup);
     IsSingle.value = false;
-  } else {
-    freshLayer();
-    IsSingle.value = false;
-  }
+  // } else {
+  //   freshLayer();
+  //   IsSingle.value = false;
+  // }
 });
 
 watch(farmPosVoList, () => {
@@ -301,63 +301,13 @@ async function userDeviceListGet() {
     }
   });
   if (arr.length != 0) {
-    await weatherDeviceDataDONewGet();
+    bindChageData("", arr[0].id);
   }
   device.value = arr;
 }
 /**
  * 绿农数据
  */
-async function deviceLandListVoListGet() {
-  let res = await getDeviceLandListVoList();
-  device.value = [];
-  device.value = res.data.filter(
-    (ele) => ele.deviceId == 52 || ele.deviceId == 51
-  );
-  for (let i = 0; i < device.value?.length; i++) {
-    if (device.value[i].deviceId == 52) {
-      device.value[i].state = 1;
-      device.value[i].imgUrl =
-        "https://oss.airoteach.cn/ee8ca6410e40b83975521b3acd97ef197ed5a0c7570377bb92c53c60a7130289.png";
-    } else if (device.value[i].deviceId == 51) {
-      device.value[i].state = 1;
-      device.value[i].imgUrl =
-        "https://oss.airoteach.cn/b862a0e66b95dedf810af8e6403d02af93598a7e45ed6ac07278f2f1e9dc153f.png";
-    }
-  }
-}
-
-async function soilDeviceDataDONewGet() {
-  let res = await getSoilDeviceDataDONew();
-  const { data } = res;
-  const arr = [];
-  for (const key in data) {
-    if (keyTitle[key]?.split("|")[0] != undefined) {
-      arr.push({
-        imgSrc: keyTitle[key].split("|")[2],
-        title: keyTitle[key].split("|")[0],
-        prompt: data[key] + "" + keyTitle[key].split("|")[1],
-      });
-    }
-  }
-  WEATHER_LIST.value = arr;
-}
-async function weatherDeviceDataDONewGet() {
-  let res = await getWeatherDeviceDataDONew();
-  const { data } = res;
-  const arr = [];
-  for (const key in data) {
-    if (keyTitle[key]?.split("|")[0] != undefined) {
-      arr.push({
-        imgSrc: keyTitle[key].split("|")[2],
-        title: keyTitle[key].split("|")[0],
-        prompt:
-          (data[key] ? data[key] : "0") + "" + keyTitle[key].split("|")[1],
-      });
-    }
-  }
-  WEATHER_LIST.value = arr;
-}
 function deviceItemInfo(item) {
   IsSingle.value = true;
   status.value = [];
@@ -528,35 +478,25 @@ function bindPopup({ latlng: { lat, lng } = {} }, id) {
  */
 async function bindChageData(e, id) {
   WEATHER_LIST.value = [];
-  if (getTenantId() != 166) {
-    const arr = device.value.filter((ele) => ele.id == id);
-    const param = {
-      pageNo: 1,
-      pageSize: 1,
-      deviceId: arr[0]?.id,
-    };
-    getRealTimeData(param).then((res) => {
-      let arr = [];
-      res.data.list[0]?.data.forEach((ele) => {
-        arr.push({
-          imgSrc:
-            "https://oss.airoteach.cn/e849176092a7783f168af6238c10c038c649830ce1a11b49998ec1d69719f5cd.png",
-          title: ele.name,
-          prompt: ele.value + "" + ele.unit,
-        });
+  // if (getTenantId() != 166) {
+  const arr = device.value.filter((ele) => ele.id == id);
+  const param = {
+    id: id,
+  };
+  getRealTimeData(param).then((res) => {
+    let arr = [];
+    res.data?.data?.forEach((ele) => {
+      arr.push({
+        imgSrc: Object.hasOwnProperty.call(keyTitle, ele.name)
+          ? keyTitle[ele.name]
+          : "https://oss.airoteach.cn/e849176092a7783f168af6238c10c038c649830ce1a11b49998ec1d69719f5cd.png",
+        title: ele.name,
+        prompt: ele.value + "" + ele.unit,
       });
-      WEATHER_LIST.value = arr;
     });
-  } else {
-    const arr = device.value.filter((ele) => ele.id == id);
-    if (arr.length > 0) {
-      if (arr[0].deviceName == "气象站") {
-        await weatherDeviceDataDONewGet();
-      } else if (arr[0].deviceName == "土壤墒情监测站") {
-        soilDeviceDataDONewGet();
-      }
-    }
-  }
+    WEATHER_LIST.value = arr;
+  });
+ 
 }
 // 创建轮廓图层
 function createAreaLayer(layerGroup) {
@@ -767,6 +707,7 @@ async function createDeviceIconLayer(layerGroup) {
     pointList = device.value.filter((item) =>
       arr.includes(item.deviceTypeName)
     );
+    console.log(pointList)
     pointList?.forEach((item, index) => {
       let pos = [];
       if (pointList[index]?.devicelat && pointList[index]?.devicelng) {
@@ -780,7 +721,7 @@ async function createDeviceIconLayer(layerGroup) {
           arr[0].landCoordinateCenter.split(",")[1],
         ];
       }
-      const iconUrl = item.mapIconUrl;
+      const iconUrl = item.imgUrl;
       const icon1 = L.icon({
         iconUrl,
         iconSize: [40, 40],
@@ -833,20 +774,13 @@ onMounted(() => {
     landMapStore.loadAreaList();
     reset();
     deviceGroupVoListGet();
-    if (getTenantId() != 166) {
-      userDeviceListGet();
-    } else {
-      deviceLandListVoListGet();
-    }
+    userDeviceListGet();
   });
   handleSearch();
   proxy.$nextTick(async () => {
     map.value = createMap(mapRef.value);
     initLayers();
     initDraw();
-    if (getTenantId() == 166) {
-      await weatherDeviceDataDONewGet();
-    }
   });
   init.value = true;
 });

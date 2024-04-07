@@ -29,7 +29,7 @@ const emit = defineEmits(["prevStp", "otherNextStep"]);
 const cancel = () => {
   emit("prevStp");
 };
-submitForm = () => {
+const submitForm = () => {
   emit("otherNextStep");
 };
 </script>

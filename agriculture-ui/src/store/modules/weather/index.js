@@ -5,6 +5,9 @@ import promiseObj from "@/utils/promiseObj";
 import { formatRainFallInfo, formatMsgList, formatTimeDateInfo, formatWeather24, formatRadar, formatDamage, formatGrid, formatFarmDevice } from "./help";
 import { formatTodayWeather, formatWeather10 } from "../overview/help";
 
+import useBaseMapStore from "@/store/modules/baseMap";
+const baseMapStore = useBaseMapStore();
+const { landList } = toRefs(baseMapStore);
 const useWeatherStore = defineStore('weather', {
   namespaced: true,
   state: () => ({
@@ -31,9 +34,8 @@ const useWeatherStore = defineStore('weather', {
         damage: getWeatherDamage(),
         radar: getWeatherRadar(),
         farmDevice: getDeviceLandListVoList({ deviceId: 52 }),
-        grid: getWeatherGrid()
+        grid: getWeatherGrid({ landId: landList.value[0]?.cropsCreateReqVOList[0]?.landId })
       }).then((res) => {
-        console.log(res)
         const weather10 = res.weather10?.value?.data || [];
         const weather24 = res.weather24?.value?.data || [];
         const rain = res.rain?.value?.data || [];
@@ -42,9 +44,9 @@ const useWeatherStore = defineStore('weather', {
         const damage = res.damage?.value?.data || {};
         const grid = res.grid?.value?.data || {};
         const farmDevice = res.farmDevice?.value?.data || {};
-        this.grid = formatGrid(grid);
+        this.grid = grid;
         this.farmDevice = formatFarmDevice(farmDevice);
-        this.initGridId = grid?.[0].landId;
+        this.initGridId = landList.value[0]?.cropsCreateReqVOList[0]?.landId;
         this.radarInfo = formatRadar(radar);
         this.showIcons = formatDamage(damage);
         formatRainFallInfo(rain) && (this.rainfallInfo = formatRainFallInfo(rain));
@@ -55,6 +57,14 @@ const useWeatherStore = defineStore('weather', {
         formatWeather24(weather24) && (this.weather24 = formatWeather24(weather24));
       });
     },
+    getLandWeather(landId) {
+      return promiseObj({
+        grid: getWeatherGrid({ landId: landId })
+      }).then((res) => {
+        const grid = res.grid?.value?.data || {};
+        this.grid = grid;
+      })
+    }
   },
 });
 

@@ -77,3 +77,11 @@ export function getFarmList() {
     method: 'get',
   })
 }
+
+export function getFarmInfos() {
+  return request({
+    url:'/statistics/getFarmInfos',
+    method: 'get',
+  })
+}
+
