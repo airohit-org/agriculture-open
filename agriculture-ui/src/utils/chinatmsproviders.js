@@ -55,30 +55,9 @@ export default function providers(L) {
             },
             Subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
             keys: [
-                    // 智慧农业 lrx_cn@163.com
-                    "8adfb91083d58b6439fcd1246d08682f",
-                    // 天地图test lrx_cn@163.com
-                    "ab0b28fb4efdd2ff5e34634a011b9f31",
-                    // 智慧农业扩展_1 lrx_cn@163.com
-                    "da74b53ec3c358a190ba6c025e018bbc",
-                    // 智慧农业扩展_2 lrx_cn@163.com
-                    "b94355a3653179023f90e7fbf9c1602a",
-                    // 智慧农业扩展_3 lrx_cn@163.com
-                    "641954230b23cace70dfd1137a1ba956",
-                    // 智慧农业扩展_4 HIT_AI_SmartAgriculture_01@somemail.com
-                    "db56dcef7a488a43c08b9eb4c4eea1a4",
-                    // 智慧农业扩展_5 HIT_AI_SmartAgriculture_01@somemail.com
-                    "1777637842367b22417541402f462d67",
-                    // 智慧农业扩展_6 HIT_AI_SmartAgriculture_01@somemail.com
-                    "46006562477bdea294e1d37d76971bcd",
-                    // 智慧农业扩展_7 HIT_AI_SmartAgriculture_01@somemail.com
-                    "9e4a264bfdd1c55d98350814c27d9aad",
-                    // 智慧农业扩展_8 HIT_AI_SmartAgriculture_01@somemail.com
-                    "ac3c82d54037eb268e44edab1dd3fce2",
-                    // 原来提供的
-                    "174705aebfe31b79b3587279e211cb9a"
+                // 需要申请天地图服务key，配置在此处，可配置多个
             ],
-            key: "174705aebfe31b79b3587279e211cb9a"
+            key: "" // 指定使用的天地图服务key
         },
         GaoDe: {
             Normal: {
