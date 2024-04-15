@@ -72,9 +72,6 @@ yarn --registry=https://registry.npmmirror.com
 # 启动服务
 yarn dev
 
-# 构建测试环境 yarn build:stage
-# 构建生产环境 yarn build:prod
-# 打包在 dist 目录下
 # 前端访问地址 http://localhost:80
 ```
 
@@ -95,6 +92,28 @@ VITE_APP_BASE_API = 'https://farmcopilot.com/agriculture-open-api'
 # 是否在打包时开启压缩，支持 gzip 和 brotli
 VITE_BUILD_COMPRESS = gzip
 
+```
+
+### 前端项目编译
+
+```bash
+# 进入项目目录
+cd agriculture-ui
+
+# 构建生产环境
+yarn build:prod
+
+# 构建测试环境
+# yarn build:stage
+
+# 打包在 dist 目录下
+# dist目录结构
+dist/                             打包后的输出目录
+│
+├── assets/                       打包后的静态资源、javascript文件、css文件等
+├── favicon.ico/                  网站logo图标
+├── index.html/                   打包后的主HTML文件
+└── index.html.gz/                压缩后的主HTML文件
 ```
 
 ### 前端文件目录
