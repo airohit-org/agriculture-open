@@ -109,7 +109,7 @@ spring:
 6. 后端编译过程
 </p>
    (1）编译项目命令
-    在项目 agriculture-open/agriculture-admin-server 执行命令：
+    在项目 agriculture-open 执行命令：
 
 ```
 mvn clean install -P dev
