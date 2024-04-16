@@ -118,7 +118,7 @@ mvn clean install -P dev
    (2) 编译结果 
 
 ```
-   执行打包命令后 agriculture-cloud-open/agriculture-admin-server/target 目录生成 agriculture-admin-server.jar
+   执行打包命令后 agriculture-open/agriculture-admin-server/target 目录生成 agriculture-admin-server.jar
 ```
 
    (3）启动项目
