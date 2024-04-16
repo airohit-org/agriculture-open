@@ -25,9 +25,9 @@
 <p style="font-size: 20px;">
 &nbsp;&nbsp;1. JDK 11 (推荐11) <br>
 &nbsp;&nbsp;2. Mysql 5.7.0 (推荐5.7版本)<br>
-&nbsp;&nbsp;3. Redis 3.0<br>
+&nbsp;&nbsp;3. Redis 5.0<br>
 &nbsp;&nbsp;4. RocketMq 4.4.0<br>
-&nbsp;&nbsp;5. Maven 3.0<br>
+&nbsp;&nbsp;5. Maven 3.x<br>
 &nbsp;&nbsp;6. VUE3 3.3.9<br>
 </p>
 
