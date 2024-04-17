@@ -298,11 +298,11 @@
         width="600px"
         append-to-body
       >
-        <publicItem
+        <PublicItem
           :selectConfig="selectConfig"
           @cancel="closeAgro"
           @getList="getList"
-        ></publicItem>
+        />
       </el-dialog>
       <el-dialog
         title="查看任务"
@@ -371,7 +371,7 @@ import {
   getTaskInfoStatistic,
   exportTaskInfoExcel,
 } from "@/api/agro/taskInfo";
-import publicItem from "@/components/formItem/publicItem.vue";
+import PublicItem from "@/components/FormItem/PublicItem.vue";
 import { allList } from "@/api/peasant/index";
 import { getTaskFiled } from "@/api/agro/taskTemplateInfo.js";
 // import { getLands } from '@/api/land/map.js'
