@@ -73,7 +73,7 @@ spring
 ```
 <p style="font-size: 20px;">
 3. redis配置 <br>
-&nbsp;&nbsp;redis配置在 application-dev.yml 文件中
+&nbsp;&nbsp;redis配置在 bootstrap-dev.yml 文件中
 </p>
 
 ```
@@ -86,7 +86,7 @@ spring:
 ```
 <p style="font-size: 20px;">
 4. rocketmq<br>
-&nbsp;&nbsp;rocketmq配置在 application-dev.yml 文件中
+&nbsp;&nbsp;rocketmq配置在 bootstrap-dev.yml 文件中
 </p>
 
 ```
@@ -102,7 +102,7 @@ spring:
 <div style="font-size: 20px;">
 5. 天气接口相关配置<br>
 &nbsp;&nbsp;天气接口是通过象辑天气获取数据 象辑天气 http://gaofen.mlogcn.com/documentation/0/00 <br>
-&nbsp;&nbsp;象辑配置在 application-dev.yml 文件中 修改象辑的 key
+&nbsp;&nbsp;象辑配置在 bootstrap-dev.yml 文件中 修改象辑的 key
 </div>
 
 <p style="font-size: 20px;">
