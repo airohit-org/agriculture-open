@@ -4,7 +4,7 @@
       <div class="div1">
         <img class="but" src="../ui/img/but.png" alt="" />
         <div class="bgland">
-          <border></border>
+          <Border />
           <!-- <div class="light"></div> -->
 
           <div class="al-item" :style="'left: 486px'">
