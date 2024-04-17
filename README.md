@@ -24,10 +24,10 @@
 ## 运行环境
 <p style="font-size: 20px;">
 &nbsp;&nbsp;1. JDK 11 (推荐11) <br>
-&nbsp;&nbsp;2. Mysql 5.7.0 (推荐5.7版本)<br>
-&nbsp;&nbsp;3. Redis 3.0<br>
+&nbsp;&nbsp;2. MySql 5.7.0 (推荐5.7版本)<br>
+&nbsp;&nbsp;3. Redis 5.0<br>
 &nbsp;&nbsp;4. RocketMq 4.4.0<br>
-&nbsp;&nbsp;5. Maven 3.0<br>
+&nbsp;&nbsp;5. Maven 3.9<br>
 &nbsp;&nbsp;6. VUE3 3.3.9<br>
 </p>
 
@@ -109,7 +109,7 @@ spring:
 6. 后端编译过程
 </p>
    (1）编译项目命令
-    在项目 agriculture-open/agriculture-admin-server 执行命令：
+    在项目 agriculture-open 执行命令：
 
 ```
 mvn clean install -P dev
@@ -118,7 +118,7 @@ mvn clean install -P dev
    (2) 编译结果 
 
 ```
-   执行打包命令后 agriculture-cloud-open/agriculture-admin-server/target 目录生成 agriculture-admin-server.jar
+   执行打包命令后 agriculture-open/agriculture-admin-server/target 目录生成 agriculture-admin-server.jar
 ```
 
    (3）启动项目
@@ -201,13 +201,13 @@ dist/                             打包后的输出目录
 <p style="font-size: 20px;">
 &nbsp;&nbsp;1. 允许用于个人学习、农业科研、智慧农业论证等公益事业;<br>
 &nbsp;&nbsp;2. 如果商用必须保留版权信息，请自觉遵守;<br>
-&nbsp;&nbsp;3. 禁止将本项目的代码和资源进行任何形式的出售，产生的一切任何后果责任由侵权者自负；
+&nbsp;&nbsp;3. 禁止将本项目的代码和资源进行任何形式的出售，产生的一切任何后果责任由侵权者自负。
 </p>
 
 ## 版权信息
 <p style="font-size: 20px;">
 &nbsp;&nbsp;本项目包含的第三方源码和二进制文件之版权信息另行标注。<br>
-&nbsp;&nbsp;Copyright © 2021 哈尔滨工业大学人工智能研究院有限公司 (https://www.airohit.com/)<br>
+&nbsp;&nbsp;Copyright © 2021 哈尔滨工业大学人工智能研究院有限公司 (https://www.airohit.com)<br>
 &nbsp;&nbsp;All rights reserved。<br>
 &nbsp;&nbsp;智农伴飞® 商标和著作权所有者为哈尔滨工业大学人工智研究院所有。
 </p>
