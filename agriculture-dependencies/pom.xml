@@ -116,11 +116,7 @@
                 <artifactId>agriculture-spring-boot-starter-banner</artifactId>
                 <version>1.6.5-snapshot</version>
             </dependency>
-            <dependency>
-                <groupId>com.airohit.cloud</groupId>
-                <artifactId>agriculture-spring-boot-starter-mqtt</artifactId>
-                <version>1.6.5-snapshot</version>
-            </dependency>
+
             <dependency>
                 <groupId>com.airohit.cloud</groupId>
                 <artifactId>agriculture-spring-boot-starter-websocket</artifactId>

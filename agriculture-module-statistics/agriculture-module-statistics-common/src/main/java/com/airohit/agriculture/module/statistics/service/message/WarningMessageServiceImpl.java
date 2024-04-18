@@ -11,7 +11,7 @@ import com.airohit.agriculture.module.statistics.dal.mysql.message.WarningMessag
 import com.airohit.agriculture.module.statistics.vo.message.*;
 import com.airohit.agriculture.module.statistics.websocket.WebSocketServer;
 import com.alibaba.fastjson.JSONObject;
-import net.dreamlu.iot.mqtt.spring.client.MqttClientTemplate;
+//import net.dreamlu.iot.mqtt.spring.client.MqttClientTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -38,8 +38,8 @@ public class WarningMessageServiceImpl implements WarningMessageService {
     private WarningMessageMapper messageMapper;
     @Resource
     private WebSocketServer webSocketServer;
-    @Resource
-    private MqttClientTemplate mqttClientTemplate;
+//    @Resource
+//    private MqttClientTemplate mqttClientTemplate;
 
     @Override
     public Integer createMessage(WarningMessageCreateReqVO createReqVO) {
@@ -53,7 +53,7 @@ public class WarningMessageServiceImpl implements WarningMessageService {
         BeanUtil.copyProperties(message, warningMessageWebSocketVO);
         String messageJsonString = JSONObject.toJSONString(warningMessageWebSocketVO);
         webSocketServer.broadcast(messageJsonString);
-        mqttClientTemplate.publish("/tenant/" + tenantId, ByteBuffer.wrap("messageJsonString".getBytes(StandardCharsets.UTF_8)));
+//        mqttClientTemplate.publish("/tenant/" + tenantId, ByteBuffer.wrap("messageJsonString".getBytes(StandardCharsets.UTF_8)));
         // 返回
         return message.getId();
     }

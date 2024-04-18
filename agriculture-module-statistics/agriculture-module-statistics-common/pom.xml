@@ -52,10 +52,6 @@
         </dependency>
         <dependency>
             <groupId>com.airohit.cloud</groupId>
-            <artifactId>agriculture-spring-boot-starter-mqtt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.airohit.cloud</groupId>
             <artifactId>agriculture-spring-boot-starter-websocket</artifactId>
         </dependency>
         <dependency>
