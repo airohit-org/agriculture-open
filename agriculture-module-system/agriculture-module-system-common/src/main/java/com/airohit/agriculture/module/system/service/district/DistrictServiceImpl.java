@@ -2,6 +2,8 @@ package com.airohit.agriculture.module.system.service.district;
 
 import cn.hutool.core.collection.CollUtil;
 import com.airohit.agriculture.framework.redis.core.RedisService;
+import com.airohit.agriculture.framework.tenant.core.aop.FarmTenantIgnore;
+import com.airohit.agriculture.framework.tenant.core.aop.TenantIgnore;
 import com.airohit.agriculture.module.system.dal.dataobject.district.Area;
 import com.airohit.agriculture.module.system.dal.dataobject.district.City;
 import com.airohit.agriculture.module.system.dal.dataobject.district.Province;
@@ -38,6 +40,8 @@ public class DistrictServiceImpl implements DistrictService {
     private AreaMapper areaMapper;
 
     @Override
+    @TenantIgnore
+    @FarmTenantIgnore
     public List<Province> getProvinceList() {
         List<Province> provinces = redisService.getCacheList(DistrictRedisEnum.PROVINCE.getName());
         if (CollUtil.isEmpty(provinces)) {
@@ -48,6 +52,8 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
+    @TenantIgnore
+    @FarmTenantIgnore
     public List<City> getCityByProvince(String provinceCode) {
         List<City> cities = redisService.getCacheMapValue(DistrictRedisEnum.CITY.getName(), provinceCode);
         if (CollUtil.isEmpty(cities)) {
@@ -60,6 +66,8 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
+    @TenantIgnore
+    @FarmTenantIgnore
     public List<Area> getAreaByCity(String cityCode) {
         List<Area> areas = redisService.getCacheMapValue(DistrictRedisEnum.AREA.getName(), cityCode);
         if (CollUtil.isEmpty(areas)) {
