@@ -21,7 +21,6 @@
 
         <module>agriculture-spring-boot-starter-file</module>
         <!--        <module>agriculture-spring-boot-starter-config</module>-->
-        <module>agriculture-spring-boot-starter-mqtt</module>
         <module>agriculture-spring-boot-starter-mq</module>
 
         <module>agriculture-spring-boot-starter-excel</module>
