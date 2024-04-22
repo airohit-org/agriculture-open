@@ -21,16 +21,16 @@
 &nbsp;&nbsp;智能农场场景下的地块管理、农事管理、物联网设备接入、种植模板、农事计划。
 </p>
 
-## 运行环境
+
+
+## 部署服务器硬件要求
 <p style="font-size: 20px;">
- 部署服务器硬件要求
+&nbsp;&nbsp;1.CPU：4核 <br>
+&nbsp;&nbsp;2.内存：8g <br>
+&nbsp;&nbsp;3.硬盘：50g <br>
 </p>
 
-```
-CPU：4核
-内存：8g
-硬盘：50g
-```
+## 运行环境
 <p style="font-size: 20px;">
 &nbsp;&nbsp;1. JDK 11 (推荐11) <br>
 &nbsp;&nbsp;2. MySql 5.7.0 (推荐5.7版本)<br>
