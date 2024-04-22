@@ -171,6 +171,14 @@ CPU：4核
 硬盘：50g
 系统：CentOS 7.9
 ```
+<p style="font-size: 20px;">
+9. 登录账号
+</p>
+
+```
+账号：admin
+密码：pIUm7dyG
+```
 
 ## 核心功能
 <p align="center">
