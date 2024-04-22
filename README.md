@@ -50,7 +50,7 @@
 &nbsp;&nbsp;(1)创建一个项目数据库 执行目录下的SQL文件<br>
 &nbsp;&nbsp;&nbsp;&nbsp;数据库表结构初始化 agriculture-open.sql<br>
 &nbsp;&nbsp;(2)修改bootstrap-dev.yml 配置文件<br>
-&nbsp;&nbsp;&nbsp;&nbsp;mysql配置在 bootstrap-dev.yml 文件中，需要修改以下配置：<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mysql配置在 <a href="agriculture-admin-server/src/main/resources/bootstrap-dev.yml">bootstrap-dev.yml</a> 文件中，需要修改以下配置：<br>
 </p>
 
 ```
@@ -91,7 +91,7 @@ sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_
 
 <p style="font-size: 20px;">
 3. redis配置 <br>
-&nbsp;&nbsp;redis配置在 bootstrap-dev.yml 文件中
+&nbsp;&nbsp;redis配置在 <a href="agriculture-admin-server/src/main/resources/bootstrap-dev.yml">bootstrap-dev.yml</a> 文件中
 </p>
 
 ```
@@ -104,7 +104,7 @@ spring:
 ```
 <p style="font-size: 20px;">
 4. rocketmq<br>
-&nbsp;&nbsp;rocketmq配置在 bootstrap-dev.yml 文件中
+&nbsp;&nbsp;rocketmq配置在 <a href="agriculture-admin-server/src/main/resources/bootstrap-dev.yml">bootstrap-dev.yml</a> 文件中
 </p>
 
 ```
