@@ -76,7 +76,6 @@ spring
 </p>
 
 ```
-sql_modesss
 sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 ```
 
@@ -127,7 +126,7 @@ mvn clean install -P dev
    (2) 编译结果 
 
 ```
-   执行打包命令后 agriculture-open/agriculture-admin-server/target 目录生成 agriculture-admin-server.jar
+执行打包命令后 agriculture-open/agriculture-admin-server/target 目录生成 agriculture-admin-server.jar
 ```
 
    (3）启动项目
