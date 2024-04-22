@@ -142,7 +142,7 @@
                   >
                     <div class="crop-select">
                       <el-select
-                        :value="form.cropsCreateReqVOList[index].crops"
+                        v-model="form.cropsCreateReqVOList[index].crops"
                         @change="
                           (val) => {
                             form.cropsCreateReqVOList[index].crops = val;

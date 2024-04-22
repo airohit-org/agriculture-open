@@ -91,6 +91,7 @@ import Hamburger from "@/components/Hamburger";
 import useAppStore from "@/store/modules/app";
 import useUserStore from "@/store/modules/user";
 import useSettingsStore from "@/store/modules/settings";
+import router from '@/router'
 import { onMounted } from "vue";
 
 const appStore = useAppStore();
@@ -126,7 +127,8 @@ function logout() {
   })
     .then(() => {
       userStore.logOut().then(() => {
-        location.href = "/";
+        // location.href = "/";
+        router.push({path: '/login'})
       });
     })
     .catch(() => {});
