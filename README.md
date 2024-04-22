@@ -23,13 +23,23 @@
 
 ## 运行环境
 <p style="font-size: 20px;">
+ 部署服务器硬件要求
+</p>
+
+```
+CPU：4核
+内存：8g
+硬盘：50g
+```
+<p style="font-size: 20px;">
 &nbsp;&nbsp;1. JDK 11 (推荐11) <br>
 &nbsp;&nbsp;2. MySql 5.7.0 (推荐5.7版本)<br>
 &nbsp;&nbsp;3. Redis 5.0.4<br>
 &nbsp;&nbsp;4. RocketMq 4.4.0<br>
 &nbsp;&nbsp;5. Maven 3.9.6<br>
-&nbsp;&nbsp;6. VUE3 3.3.9<br>
 </p>
+
+
 
 ## 核心配置
 <p style="font-size: 20px;">
@@ -145,6 +155,9 @@ nohup java -jar agriculture-admin-server.jar &
 # 进入项目目录
 cd agriculture-ui
 
+# 安装依赖
+yarn install
+
 # 构建生产环境
 yarn build:prod
 
@@ -187,19 +200,8 @@ server {
         }
  }
 ```
-
 <p style="font-size: 20px;">
-9. 部署服务器硬件要求
-</p>
-
-```
-CPU：4核
-内存：8g
-硬盘：50g
-系统：CentOS 7.9
-```
-<p style="font-size: 20px;">
-10. 登录账号
+9. 登录账号
 </p>
 
 ```
