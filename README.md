@@ -25,9 +25,9 @@
 <p style="font-size: 20px;">
 &nbsp;&nbsp;1. JDK 11 (推荐11) <br>
 &nbsp;&nbsp;2. MySql 5.7.0 (推荐5.7版本)<br>
-&nbsp;&nbsp;3. Redis 5.0<br>
+&nbsp;&nbsp;3. Redis 5.0.4<br>
 &nbsp;&nbsp;4. RocketMq 4.4.0<br>
-&nbsp;&nbsp;5. Maven 3.9<br>
+&nbsp;&nbsp;5. Maven 3.9.6<br>
 &nbsp;&nbsp;6. VUE3 3.3.9<br>
 </p>
 
@@ -71,6 +71,15 @@ spring
                 username: xxx
                 password: xxx
 ```
+<p style="font-size: 20px;">
+&nbsp;&nbsp;(3)MySql配置文件修改<br>
+</p>
+
+```
+sql_modesss
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+```
+
 <p style="font-size: 20px;">
 3. redis配置 <br>
 &nbsp;&nbsp;redis配置在 bootstrap-dev.yml 文件中
@@ -151,6 +160,16 @@ dist/                             打包后的输出目录
 ├── favicon.ico/                  网站logo图标
 ├── index.html/                   打包后的主HTML文件
 └── index.html.gz/                压缩后的主HTML文件
+```
+<p style="font-size: 20px;">
+8. 部署服务器硬件要求
+</p>
+
+```
+CPU：4核
+内存：8g
+硬盘：50g
+系统：CentOS 7.9
 ```
 
 ## 核心功能
