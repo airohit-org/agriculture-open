@@ -1,6 +1,7 @@
 import { nextTick, reactive, ref } from 'vue'
 
-import Provider from "./chinese-tms-providers";
+// import Provider from "./chinese-tms-providers";
+import Provider from "@/utils/chinatmsproviders";
 import * as turf from "@turf/turf";
 import L from "leaflet";
 import "@geoman-io/leaflet-geoman-free";

@@ -55,9 +55,8 @@ export default function providers(L) {
             },
             Subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
             keys: [
-                // 需要申请天地图服务key，配置在此处，可配置多个
+                // 需要申请天地图服务key，配置在此处，可配置多个，随机取用
             ],
-            key: "" // 指定使用的天地图服务key
         },
         GaoDe: {
             Normal: {

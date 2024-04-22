@@ -62,27 +62,15 @@
 ### 地图服务
 
 - 地图服务采用天地图服务，请在使用前申请天地图服务key。
-- 请在 `src/components/GisMap/chinese-tms-providers.js` 和 `src/utils/chinatmsproviders.js` 文件中配置天地图服务key。
+- 请在 `src/utils/chinatmsproviders.js` 文件中配置天地图服务key。
 ```json
 // src\components\GisMap\chinese-tms-providers.js & src/utils/chinatmsproviders.js
 TianDiTu: {
-  Normal: {
-      Map: "https://t{s}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk={key}",
-      Annotion: "https://t{s}.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk={key}"
-  },
-  Satellite: {
-      Map: "https://t{s}.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk={key}",
-      Annotion: "https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk={key}"
-  },
-  Terrain: {
-      Map: "https://t{s}.tianditu.gov.cn/ter_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ter&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk={key}",
-      Annotion: "https://t{s}.tianditu.gov.cn/cta_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cta&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk={key}"
-  },
-  Subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
-  keys: [
-          // 如果有多个天地图服务key，请配置在此处，
-  ],
-  key: "" // 指定使用的天地图服务key
+    // ...,
+    keys: [
+        // 需要申请天地图服务key，配置在此处，可配置多个，随机取用
+    ],
+}
 ```
 
 ### 前端项目启动
@@ -108,11 +96,11 @@ yarn dev
 # 页面标题
 VITE_APP_TITLE = 智农伴飞
 
-# 开发环境配置
-VITE_APP_ENV = 'development'
+# 环境配置 development开发环境 production生产环境
+VITE_APP_ENV = 'production'
 
-# 开发环境
-VITE_APP_BASE_API = 'xxx'
+# 请求路径
+VITE_APP_BASE_API = '/agriculture-open-api'
 
 # 是否在打包时开启压缩，支持 gzip 和 brotli
 VITE_BUILD_COMPRESS = gzip
@@ -140,6 +128,7 @@ dist/                             打包后的输出目录
 ├── index.html/                   打包后的主HTML文件
 └── index.html.gz/                压缩后的主HTML文件
 ```
+通常情况下将 dist 文件夹的静态文件发布到你的 nginx 或者静态服务器即可，其中的 index.html 是后台服务的入口页面。
 
 ### 前端文件目录
 
@@ -207,8 +196,7 @@ agriculture-ui/
 
 - **其他问题**
 
-  如果有其他问题或者建议，欢迎
-	<!-- [ISSUE](https://gitee.com/youlaiorg/vue3-element-admin/issues/new) -->
+  如果有其他问题或者建议，欢迎[ISSUE](https://gitee.com/ai_5/agriculture-open/issues/new)
 
 
 
