@@ -160,8 +160,36 @@ dist/                             打包后的输出目录
 ├── index.html/                   打包后的主HTML文件
 └── index.html.gz/                压缩后的主HTML文件
 ```
+
 <p style="font-size: 20px;">
-8. 部署服务器硬件要求
+8. NGINX 配置
+</p>
+
+```
+server {
+        listen       8005;
+        charset utf-8;
+        absolute_redirect off;
+        #real_ip_header    X-Forwarded-For;
+
+        location /agriculture-open-ui {
+              # alias /usr/local/nginx/html/dist/;
+              alias /agriculture-open-ui/;
+              index   index.html;
+              expires -1;
+        }
+
+        location /agriculture-open-api/ {
+                add_header Access-Control-Allow-Headers '*';
+                add_header Access-Control-Allow-Methods '*';
+                client_max_body_size 500m;
+                proxy_pass http://127.0.0.1:48083/;
+        }
+ }
+```
+
+<p style="font-size: 20px;">
+9. 部署服务器硬件要求
 </p>
 
 ```
@@ -171,7 +199,7 @@ CPU：4核
 系统：CentOS 7.9
 ```
 <p style="font-size: 20px;">
-9. 登录账号
+10. 登录账号
 </p>
 
 ```
