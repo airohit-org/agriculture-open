@@ -42,29 +42,13 @@
   
 - **气象概览**：展示当前天气状况，包括温度、湿度、光照强度、二氧化碳浓度、氧气浓度等。
 
-
-## 系统预览
-
-- 账号/密码
-
-演示地址：https://farmcopilot.com/agriculture-open-ui
-
-
-## 公众号
-
-待补充
-
-## 团队介绍
-
-待补充
-
 ## 使用须知
 ### 地图服务
 
 - 地图服务采用天地图服务，请在使用前申请天地图服务key。
 - 请在 `src/utils/chinatmsproviders.js` 文件中配置天地图服务key。
 ```json
-// src\components\GisMap\chinese-tms-providers.js & src/utils/chinatmsproviders.js
+// src/utils/chinatmsproviders.js
 TianDiTu: {
     // ...,
     keys: [
