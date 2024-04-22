@@ -37,6 +37,7 @@
 &nbsp;&nbsp;3. Redis 5.0.4<br>
 &nbsp;&nbsp;4. RocketMq 4.4.0<br>
 &nbsp;&nbsp;5. Maven 3.9.6<br>
+&nbsp;&nbsp;6. VUE3 3.3.9<br>
 </p>
 
 
