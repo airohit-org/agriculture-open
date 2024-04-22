@@ -120,7 +120,7 @@ spring:
 <div style="font-size: 20px;">
 5. 天气接口相关配置<br>
 &nbsp;&nbsp;天气接口是通过象辑天气获取数据 象辑天气 http://gaofen.mlogcn.com/documentation/0/00 <br>
-&nbsp;&nbsp;象辑配置在 bootstrap-dev.yml 文件中 修改象辑的 key
+&nbsp;&nbsp;象辑配置在 <a href="agriculture-admin-server/src/main/resources/bootstrap-dev.yml">abootstrap-dev.yml</a> 文件中 修改象辑的 key
 </div>
 
 <p style="font-size: 20px;">
