@@ -326,8 +326,9 @@ debug: false
 weather:
   # 天气秘钥
   key: &key=xxx
-  # 当日天气
+  # 是否启用正式数据,false则启用下边的天气演示数据
   state: false
+  # 当日天气
   today:
     url_15: http://gfapi.mlogcn.com/weather/v001/day?days=1&lonlat=
     url_240: http://gfapi.mlogcn.com/high_res/v001/gridhour?lonlat=
@@ -354,7 +355,7 @@ weather:
     url_hour: http://gfapi.mlogcn.com/high_res/v001/gridhour?lonlat=
     url_rain_hour: '&hour=1'
 
-
+#演示天气数据
 weatherDate:
   todayWeather:
     #15
