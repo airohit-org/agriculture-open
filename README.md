@@ -184,6 +184,10 @@ server {
         charset utf-8;
         absolute_redirect off;
         #real_ip_header    X-Forwarded-For;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-Scheme $scheme;
 
         location /agriculture-open-ui {
               # alias /usr/local/nginx/html/dist/;
