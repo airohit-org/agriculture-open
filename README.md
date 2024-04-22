@@ -205,6 +205,7 @@ server {
 </p>
 
 ```
+访问地址:http://xxx:8005/agriculture-open-ui/
 账号：admin
 密码：pIUm7dyG
 ```
